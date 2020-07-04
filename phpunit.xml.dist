@@ -14,4 +14,8 @@
             <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
+    <php>
+        <env name="TESTS_LAMINAS_CACHE_MEMCACHED_HOST" value="127.0.0.1" />
+        <env name="TESTS_LAMINAS_CACHE_MEMCACHED_PORT" value="11211" />
+    </php>
 </phpunit>

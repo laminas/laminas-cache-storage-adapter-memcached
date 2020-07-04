@@ -4,10 +4,14 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+services:
+  - memcached
+
 env:
   global:
     - COMPOSER_ARGS="--no-interaction"
     - COVERAGE_DEPS="php-coveralls/php-coveralls"
+    - MEMCACHED_PECL_VERSION="memcached-3.1.5"
 
 matrix:
   fast_finish: true
@@ -15,9 +19,11 @@ matrix:
     - php: 5.6
       env:
         - DEPS=lowest
+        - MEMCACHED_PECL_VERSION="memcached-2.2.0"
     - php: 5.6
       env:
         - DEPS=latest
+        - MEMCACHED_PECL_VERSION="memcached-2.2.0"
     - php: 7.0
       env:
         - DEPS=lowest
@@ -55,6 +61,8 @@ before_install:
   - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
 
 install:
+  - echo "no" | pecl install -f $MEMCACHED_PECL_VERSION
+  - phpenv config-add .ci/memcached.ini
   - travis_retry composer install $COMPOSER_ARGS --ignore-platform-reqs
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
