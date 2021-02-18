@@ -647,7 +647,10 @@ class Memcached extends AbstractAdapter implements
                 );
 
             default:
-                return new Exception\RuntimeException($this->getMemcachedResource()->getResultMessage());
+                return new Exception\RuntimeException(
+                    $this->getMemcachedResource()->getResultMessage(),
+                    $code
+                );
         }
     }
 }
