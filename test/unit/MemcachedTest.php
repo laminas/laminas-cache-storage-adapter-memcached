@@ -11,6 +11,9 @@ namespace LaminasTest\Cache\Storage\Adapter;
 use Laminas\Cache;
 use Prophecy\Argument;
 use RuntimeException;
+use stdClass;
+use Throwable;
+use function random_int;
 
 /**
  * @group      Laminas_Cache
@@ -231,26 +234,66 @@ class MemcachedTest extends CommonAdapterTest
         $this->assertSame('testPersistentId', $options->getPersistentId());
     }
 
-    public function testExceptionCodeIsPassedToRuntimeException(): void
+    public function testExceptionCodeIsPassedToRuntimeExceptionWhenExceptionIsBeingDetectedByInternalMethod(): void
     {
-        $memcached = new Cache\Storage\Adapter\Memcached(
-            new Cache\Storage\Adapter\MemcachedOptions(
-                [
-                    'servers' => ['foobar'],
-                ]
-            )
-        );
+        $memcached = new class($this->_options) extends Cache\Storage\Adapter\Memcached {
+            /** @psalm-param positive-int $code  */
+            public function createExceptionWithCode(int $code): Throwable
+            {
+                return $this->getExceptionByResultCode($code);
+            }
+        };
 
-        try {
-            $memcached->flush();
-        } catch (RuntimeException $exception) {
-            self::assertIsInt($exception->getCode());
-            self::assertGreaterThan(0, $exception->getCode());
-            self::assertInstanceOf(Cache\Exception\RuntimeException::class, $exception);
-            return;
-        }
+        $exception = $memcached->createExceptionWithCode(1);
+        self::assertIsInt($exception->getCode());
+        self::assertGreaterThan(0, $exception->getCode());
+        self::assertInstanceOf(Cache\Exception\RuntimeException::class, $exception);
+    }
 
-        self::fail('Flush should have thrown an exception.');
+    public function testExceptionCodeIsPassedToRuntimeExceptionWhenTotalSpaceRequestFails(): void
+    {
+        $memcached = $this->createPartialMock(stdClass::class, ['getStats', 'getResultMessage', 'getResultCode']);
+        $memcached->method('getStats')->willReturn(false);
+        $memcached->method('getResultMessage')->willReturn('Bar');
+        $code = random_int(1, 999);
+        $memcached->method('getResultCode')->willReturn($code);
+
+        $options = new Cache\Storage\Adapter\MemcachedOptions();
+        $resourceManager = $this->createMock(Cache\Storage\Adapter\MemcachedResourceManager::class);
+        $resourceManager
+            ->method('getResource')
+            ->willReturn($memcached);
+        $options->setResourceManager($resourceManager);
+
+        $storage = new Cache\Storage\Adapter\Memcached($options);
+
+        $this->expectException(Cache\Exception\RuntimeException::class);
+        $this->expectExceptionCode($code);
+        $this->expectExceptionMessage('Bar');
+        $storage->getTotalSpace();
+    }
+
+    public function testExceptionCodeIsPassedToRuntimeExceptionWhenAvailableSpaceRequestFails(): void
+    {
+        $memcached = $this->createPartialMock(stdClass::class, ['getStats', 'getResultMessage', 'getResultCode']);
+        $memcached->method('getStats')->willReturn(false);
+        $memcached->method('getResultMessage')->willReturn('Foo');
+        $code = random_int(1, 999);
+        $memcached->method('getResultCode')->willReturn($code);
+
+        $options = new Cache\Storage\Adapter\MemcachedOptions();
+        $resourceManager = $this->createMock(Cache\Storage\Adapter\MemcachedResourceManager::class);
+        $resourceManager
+            ->method('getResource')
+            ->willReturn($memcached);
+        $options->setResourceManager($resourceManager);
+
+        $storage = new Cache\Storage\Adapter\Memcached($options);
+
+        $this->expectException(Cache\Exception\RuntimeException::class);
+        $this->expectExceptionCode($code);
+        $this->expectExceptionMessage('Foo');
+        $storage->getAvailableSpace();
     }
 
     public function tearDown()
