@@ -10,6 +10,7 @@ namespace LaminasTest\Cache\Storage\Adapter;
 
 use Laminas\Cache;
 use Prophecy\Argument;
+use RuntimeException;
 
 /**
  * @group      Laminas_Cache
@@ -228,6 +229,28 @@ class MemcachedTest extends CommonAdapterTest
 
         $this->assertSame('testPersistentId', $resourceManager->getPersistentId($resourceId));
         $this->assertSame('testPersistentId', $options->getPersistentId());
+    }
+
+    public function testExceptionCodeIsPassedToRuntimeException(): void
+    {
+        $memcached = new Cache\Storage\Adapter\Memcached(
+            new Cache\Storage\Adapter\MemcachedOptions(
+                [
+                    'servers' => ['foobar'],
+                ]
+            )
+        );
+
+        try {
+            $memcached->flush();
+        } catch (RuntimeException $exception) {
+            self::assertIsInt($exception->getCode());
+            self::assertGreaterThan(0, $exception->getCode());
+            self::assertInstanceOf(Cache\Exception\RuntimeException::class, $exception);
+            return;
+        }
+
+        self::fail('Flush should have thrown an exception.');
     }
 
     public function tearDown()
