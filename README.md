@@ -1,6 +1,6 @@
 # laminas-cache-storage-adapter-memcached
 
-[![Build Status](https://github.com/{organization}/{repository}/workflows/continuous-integration.yml/badge.svg)](https://github.com/{organization}/{repository}/actions/workflows/continuous-integration.yml)
+[![Build Status](https://github.com/laminas/laminas-cache-storage-adapter-memcached/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/laminas/laminas-cache-storage-adapter-memcached/actions/workflows/continuous-integration.yml)
 
 This library provides a `laminas-cache` compatible `StorageInterface` implementation for Memcached.
 
