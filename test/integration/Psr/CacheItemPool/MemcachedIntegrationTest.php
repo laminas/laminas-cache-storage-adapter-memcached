@@ -8,6 +8,13 @@ use Laminas\Cache\Psr\CacheItemPool\CacheItemPoolDecorator;
 use Laminas\Cache\Storage\Adapter\Memcached;
 use Laminas\Cache\StorageFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Psr\Cache\CacheItemPoolInterface;
+
+use function date_default_timezone_get;
+use function date_default_timezone_set;
+use function get_class;
+use function getenv;
+use function sprintf;
 
 /**
  * @require extension memcached
@@ -16,13 +23,12 @@ class MemcachedIntegrationTest extends CachePoolTest
 {
     /**
      * Backup default timezone
+     *
      * @var string
      */
     private $tz;
 
-    /**
-     * @var Memcached
-     */
+    /** @var Memcached */
     private $storage;
 
     protected function setUp()
@@ -45,13 +51,13 @@ class MemcachedIntegrationTest extends CachePoolTest
         parent::tearDown();
     }
 
-    public function createCachePool()
+    public function createCachePool(): CacheItemPoolInterface
     {
         $host = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST');
         $port = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT');
 
         $options = [
-            'resource_id' => __CLASS__
+            'resource_id' => self::class,
         ];
         if ($host && $port) {
             $options['servers'] = [[$host, $port]];
@@ -62,9 +68,9 @@ class MemcachedIntegrationTest extends CachePoolTest
         try {
             $storage = StorageFactory::adapterFactory('memcached', $options);
 
-            $deferredSkippedMessage = sprintf(
+            $deferredSkippedMessage                                                 = sprintf(
                 '%s storage doesn\'t support driver deferred',
-                \get_class($storage)
+                get_class($storage)
             );
             $this->skippedTests['testHasItemReturnsFalseWhenDeferredItemIsExpired'] = $deferredSkippedMessage;
 
