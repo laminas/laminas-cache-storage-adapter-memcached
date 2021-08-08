@@ -28,7 +28,7 @@ class MemcachedResourceManagerTest extends TestCase
      */
     protected $resourceManager;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->resourceManager = new MemcachedResourceManager();
     }

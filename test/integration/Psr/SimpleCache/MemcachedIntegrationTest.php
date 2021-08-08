@@ -29,16 +29,17 @@ class MemcachedIntegrationTest extends SimpleCacheTest
     /** @var Memcached */
     private $storage;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         // set non-UTC timezone
         $this->tz = date_default_timezone_get();
         date_default_timezone_set('America/Vancouver');
+        $this->skippedTests['testBasicUsageWithLongKey'] = 'Memcached adapter does not support keys up to 300 bytes.';
 
         parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         date_default_timezone_set($this->tz);
 
