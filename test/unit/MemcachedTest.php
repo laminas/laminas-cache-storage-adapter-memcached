@@ -6,8 +6,10 @@ use Laminas\Cache;
 use Memcached;
 use Throwable;
 
+use function bin2hex;
 use function defined;
 use function getenv;
+use function random_bytes;
 use function random_int;
 use function restore_error_handler;
 use function set_error_handler;
@@ -310,6 +312,16 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         $this->expectExceptionCode($code);
         $this->expectExceptionMessage('Foo');
         $storage->getAvailableSpace();
+    }
+
+    public function testCanStoreValueWithKeyAtMaximumLength(): void
+    {
+        $maximumKeyLength = $this->storage->getCapabilities()->getMaxKeyLength();
+        $key              = bin2hex(random_bytes((int) ($maximumKeyLength / 2)));
+
+        $value = 'whatever';
+        self::assertTrue($this->storage->setItem($key, $value));
+        self::assertEquals($value, $this->storage->getItem($key));
     }
 
     public function tearDown(): void

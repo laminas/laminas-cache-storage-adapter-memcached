@@ -27,6 +27,8 @@ class Memcached extends AbstractAdapter implements
     FlushableInterface,
     TotalSpaceCapableInterface
 {
+    private const MAXIMUM_KEY_LENGTH = 250;
+
     /**
      * Has this instance be initialized
      *
@@ -84,22 +86,7 @@ class Memcached extends AbstractAdapter implements
     protected function getMemcachedResource()
     {
         if (! $this->initialized) {
-            $options = $this->getOptions();
-
-            // get resource manager and resource id
-            $this->resourceManager = $options->getResourceManager();
-            $this->resourceId      = $options->getResourceId();
-
-            // init namespace prefix
-            $namespace = $options->getNamespace();
-            if ($namespace !== '') {
-                $this->namespacePrefix = $namespace . $options->getNamespaceSeparator();
-            } else {
-                $this->namespacePrefix = '';
-            }
-
-            // update initialized flag
-            $this->initialized = true;
+            $this->initialize();
         }
 
         return $this->resourceManager->getResource($this->resourceId);
@@ -583,6 +570,14 @@ class Memcached extends AbstractAdapter implements
      */
     protected function internalGetCapabilities()
     {
+        if (! $this->initialized) {
+            $this->initialize();
+        }
+
+        $keyLengthReservedForNamespaceWithPrefix = strlen($this->namespacePrefix);
+
+        $maximumKeyLength = self::MAXIMUM_KEY_LENGTH - $keyLengthReservedForNamespaceWithPrefix;
+
         if ($this->capabilities === null) {
             $this->capabilityMarker = new stdClass();
             $this->capabilities     = new Capabilities(
@@ -605,7 +600,7 @@ class Memcached extends AbstractAdapter implements
                     'staticTtl'          => true,
                     'ttlPrecision'       => 1,
                     'useRequestTime'     => false,
-                    'maxKeyLength'       => 255,
+                    'maxKeyLength'       => $maximumKeyLength,
                     'namespaceIsPrefix'  => true,
                 ]
             );
@@ -660,5 +655,29 @@ class Memcached extends AbstractAdapter implements
                     $code
                 );
         }
+    }
+
+    private function initialize(): void
+    {
+        if ($this->initialized) {
+            return;
+        }
+
+        $options = $this->getOptions();
+
+        // get resource manager and resource id
+        $this->resourceManager = $options->getResourceManager();
+        $this->resourceId      = $options->getResourceId();
+
+        // init namespace prefix
+        $namespace = $options->getNamespace();
+        if ($namespace !== '') {
+            $this->namespacePrefix = $namespace . $options->getNamespaceSeparator();
+        } else {
+            $this->namespacePrefix = '';
+        }
+
+        // update initialized flag
+        $this->initialized = true;
     }
 }
