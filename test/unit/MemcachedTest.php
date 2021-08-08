@@ -3,11 +3,19 @@
 namespace LaminasTest\Cache\Storage\Adapter;
 
 use Laminas\Cache;
+use Memcached;
 use Prophecy\Argument;
-use RuntimeException;
 use stdClass;
 use Throwable;
+
+use function defined;
+use function extension_loaded;
+use function getenv;
 use function random_int;
+use function restore_error_handler;
+use function set_error_handler;
+
+use const E_USER_DEPRECATED;
 
 /**
  * @group      Laminas_Cache
@@ -21,17 +29,17 @@ class MemcachedTest extends CommonAdapterTest
             $this->markTestSkipped("Memcached extension is not loaded");
         }
 
-        $this->_options  = new Cache\Storage\Adapter\MemcachedOptions([
-            'resource_id' => __CLASS__
+        $this->_options = new Cache\Storage\Adapter\MemcachedOptions([
+            'resource_id' => self::class,
         ]);
 
         if (getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST') && getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')) {
-            $this->_options->getResourceManager()->setServers(__CLASS__, [
-                [getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST'), getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')]
+            $this->_options->getResourceManager()->setServers(self::class, [
+                [getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST'), getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')],
             ]);
         } elseif (getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')) {
-            $this->_options->getResourceManager()->setServers(__CLASS__, [
-                [getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')]
+            $this->_options->getResourceManager()->setServers(self::class, [
+                [getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')],
             ]);
         }
 
@@ -58,7 +66,7 @@ class MemcachedTest extends CommonAdapterTest
         $options = new Cache\Storage\Adapter\MemcachedOptions();
 
         $deprecated = false;
-        set_error_handler(function () use (& $deprecated) {
+        set_error_handler(function () use (&$deprecated) {
             $deprecated = true;
         }, E_USER_DEPRECATED);
 
@@ -87,12 +95,12 @@ class MemcachedTest extends CommonAdapterTest
             return;
         }
 
-        $resource = $this->prophesize(\Memcached::class);
+        $resource        = $this->prophesize(Memcached::class);
         $resourceManager = $this->prophesize(Cache\Storage\Adapter\MemcachedResourceManager::class);
 
         $resourceManager->getResource(Argument::any())->willReturn($resource->reveal());
         $resource->get(Argument::cetera())->willReturn(null);
-        $resource->getResultCode()->willReturn(\Memcached::RES_PARTIAL_READ);
+        $resource->getResultCode()->willReturn(Memcached::RES_PARTIAL_READ);
         $resource->getResultMessage()->willReturn('foo');
 
         $storage = new Cache\Storage\Adapter\Memcached([
@@ -175,17 +183,17 @@ class MemcachedTest extends CommonAdapterTest
         $options = new Cache\Storage\Adapter\MemcachedOptions();
 
         $options->setLibOptions([
-            'COMPRESSION' => false
+            'COMPRESSION' => false,
         ]);
 
         $this->assertEquals($options->getResourceManager()->getLibOption(
             $options->getResourceId(),
-            \Memcached::OPT_COMPRESSION
+            Memcached::OPT_COMPRESSION
         ), false);
 
         $memcached = new Cache\Storage\Adapter\Memcached($options);
         $this->assertEquals($memcached->getOptions()->getLibOptions(), [
-            \Memcached::OPT_COMPRESSION => false
+            Memcached::OPT_COMPRESSION => false,
         ]);
     }
 
@@ -197,7 +205,7 @@ class MemcachedTest extends CommonAdapterTest
         $options = new Cache\Storage\Adapter\MemcachedOptions();
 
         $deprecated = false;
-        set_error_handler(function () use (& $deprecated) {
+        set_error_handler(function () use (&$deprecated) {
             $deprecated = true;
         }, E_USER_DEPRECATED);
 
@@ -208,18 +216,18 @@ class MemcachedTest extends CommonAdapterTest
 
         $this->assertEquals($options->getResourceManager()->getLibOption(
             $options->getResourceId(),
-            \Memcached::OPT_COMPRESSION
+            Memcached::OPT_COMPRESSION
         ), false);
 
         $memcached = new Cache\Storage\Adapter\Memcached($options);
         $this->assertEquals($memcached->getOptions()->getLibOptions(), [
-                \Memcached::OPT_COMPRESSION => false
+            Memcached::OPT_COMPRESSION => false,
         ]);
     }
 
     public function testOptionPersistentId()
     {
-        $options = new Cache\Storage\Adapter\MemcachedOptions();
+        $options         = new Cache\Storage\Adapter\MemcachedOptions();
         $resourceId      = $options->getResourceId();
         $resourceManager = $options->getResourceManager();
         $options->setPersistentId('testPersistentId');
@@ -230,7 +238,7 @@ class MemcachedTest extends CommonAdapterTest
 
     public function testExceptionCodeIsPassedToRuntimeExceptionWhenExceptionIsBeingDetectedByInternalMethod(): void
     {
-        $memcached = new class($this->_options) extends Cache\Storage\Adapter\Memcached {
+        $memcached = new class ($this->_options) extends Cache\Storage\Adapter\Memcached {
             /** @psalm-param positive-int $code  */
             public function createExceptionWithCode(int $code): Throwable
             {
@@ -252,7 +260,7 @@ class MemcachedTest extends CommonAdapterTest
         $code = random_int(1, 999);
         $memcached->method('getResultCode')->willReturn($code);
 
-        $options = new Cache\Storage\Adapter\MemcachedOptions();
+        $options         = new Cache\Storage\Adapter\MemcachedOptions();
         $resourceManager = $this->createMock(Cache\Storage\Adapter\MemcachedResourceManager::class);
         $resourceManager
             ->method('getResource')
@@ -275,7 +283,7 @@ class MemcachedTest extends CommonAdapterTest
         $code = random_int(1, 999);
         $memcached->method('getResultCode')->willReturn($code);
 
-        $options = new Cache\Storage\Adapter\MemcachedOptions();
+        $options         = new Cache\Storage\Adapter\MemcachedOptions();
         $resourceManager = $this->createMock(Cache\Storage\Adapter\MemcachedResourceManager::class);
         $resourceManager
             ->method('getResource')

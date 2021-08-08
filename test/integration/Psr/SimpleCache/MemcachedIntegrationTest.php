@@ -9,6 +9,10 @@ use Laminas\Cache\Storage\Adapter\Memcached;
 use Laminas\Cache\StorageFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 
+use function date_default_timezone_get;
+use function date_default_timezone_set;
+use function getenv;
+
 /**
  * @require extension memcached
  */
@@ -16,13 +20,12 @@ class MemcachedIntegrationTest extends SimpleCacheTest
 {
     /**
      * Backup default timezone
+     *
      * @var string
      */
     private $tz;
 
-    /**
-     * @var Memcached
-     */
+    /** @var Memcached */
     private $storage;
 
     protected function setUp()
@@ -51,7 +54,7 @@ class MemcachedIntegrationTest extends SimpleCacheTest
         $port = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT');
 
         $options = [
-            'resource_id' => __CLASS__
+            'resource_id' => self::class,
         ];
         if ($host && $port) {
             $options['servers'] = [[$host, $port]];

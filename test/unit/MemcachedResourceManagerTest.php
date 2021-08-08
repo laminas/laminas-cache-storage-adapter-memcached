@@ -2,8 +2,14 @@
 
 namespace LaminasTest\Cache\Storage\Adapter;
 
+use Laminas\Cache\Exception\InvalidArgumentException;
 use Laminas\Cache\Storage\Adapter\MemcachedResourceManager;
+use Memcached;
 use PHPUnit\Framework\TestCase;
+
+use function class_exists;
+use function count;
+use function is_array;
 
 /**
  * PHPUnit test case
@@ -43,7 +49,7 @@ class MemcachedResourceManagerTest extends TestCase
      */
     public function validResourceProvider()
     {
-        $data = [
+        return [
             // empty resource
             [
                 'testEmptyResource',
@@ -87,7 +93,7 @@ class MemcachedResourceManagerTest extends TestCase
                         '127.0.0.1',
                         '192.1.0.1?weight=3',
                         'localhost',
-                        '127.0.0.1:11211?weight=0'
+                        '127.0.0.1:11211?weight=0',
                     ],
                 ],
                 '',
@@ -128,11 +134,11 @@ class MemcachedResourceManagerTest extends TestCase
                 [
                     'servers' => [
                         [
-                           'host' => '127.0.0.1',
-                           'port' => 1234,
+                            'host' => '127.0.0.1',
+                            'port' => 1234,
                         ],
                         [
-                           'host' => '127.0.0.1',
+                            'host' => '127.0.0.1',
                         ],
                         [
                             'host'   => '192.1.0.1',
@@ -142,8 +148,8 @@ class MemcachedResourceManagerTest extends TestCase
                             'host' => 'localhost',
                         ],
                         [
-                            'host' => '127.0.0.1',
-                            'port' => 11211,
+                            'host'   => '127.0.0.1',
+                            'port'   => 11211,
                             'weight' => 0,
                         ],
                     ],
@@ -170,8 +176,8 @@ class MemcachedResourceManagerTest extends TestCase
                 '',
                 [],
                 class_exists('Memcached', false) ? [
-                    \Memcached::OPT_COMPRESSION => false,
-                    \Memcached::OPT_PREFIX_KEY  => 'test_',
+                    Memcached::OPT_COMPRESSION => false,
+                    Memcached::OPT_PREFIX_KEY  => 'test_',
                 ] : [],
             ],
 
@@ -180,20 +186,18 @@ class MemcachedResourceManagerTest extends TestCase
                 'testLibOptionsGivenAsName',
                 [
                     'lib_options' => class_exists('Memcached', false) ? [
-                        \Memcached::OPT_COMPRESSION => false,
-                        \Memcached::OPT_PREFIX_KEY  => 'test_',
+                        Memcached::OPT_COMPRESSION => false,
+                        Memcached::OPT_PREFIX_KEY  => 'test_',
                     ] : [],
                 ],
                 '',
                 [],
                 class_exists('Memcached', false) ? [
-                    \Memcached::OPT_COMPRESSION => false,
-                    \Memcached::OPT_PREFIX_KEY  => 'test_',
+                    Memcached::OPT_COMPRESSION => false,
+                    Memcached::OPT_PREFIX_KEY  => 'test_',
                 ] : [],
             ],
         ];
-
-        return $data;
     }
 
     /**
@@ -214,7 +218,7 @@ class MemcachedResourceManagerTest extends TestCase
         // php-memcached is required to set libmemcached options
         if (is_array($resource) && isset($resource['lib_options']) && count($resource['lib_options']) > 0) {
             if (! class_exists('Memcached', false)) {
-                $this->expectException('Laminas\Cache\Exception\InvalidArgumentException');
+                $this->expectException(InvalidArgumentException::class);
                 $this->expectExceptionMessage('Unknown libmemcached option');
             }
         }
@@ -234,14 +238,14 @@ class MemcachedResourceManagerTest extends TestCase
     {
         $memcachedInstalled = class_exists('Memcached', false);
 
-        $libOptions = ['compression' => false];
-        $resourceId = 'testResourceId';
+        $libOptions   = ['compression' => false];
+        $resourceId   = 'testResourceId';
         $resourceMock = $this->getMockBuilder('Memcached')
            ->setMethods(['setOptions'])
             ->getMock();
 
         if (! $memcachedInstalled) {
-            $this->expectException('Laminas\Cache\Exception\InvalidArgumentException');
+            $this->expectException(InvalidArgumentException::class);
         } else {
             $resourceMock
                 ->expects($this->once())

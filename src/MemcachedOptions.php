@@ -5,6 +5,12 @@ namespace Laminas\Cache\Storage\Adapter;
 use Laminas\Cache\Exception;
 use Memcached as MemcachedResource;
 
+use function sprintf;
+use function strlen;
+use function trigger_error;
+
+use const E_USER_DEPRECATED;
+
 /**
  * These are options specific to the Memcached adapter
  */
@@ -22,6 +28,7 @@ class MemcachedOptions extends AdapterOptions
 
     /**
      * The namespace separator
+     *
      * @var string
      */
     protected $namespaceSeparator = ':';
@@ -92,11 +99,11 @@ class MemcachedOptions extends AdapterOptions
     /**
      * A memcached resource to share
      *
-     * @param null|MemcachedResource $memcachedResource
-     * @return MemcachedOptions Provides a fluent interface
      * @deprecated Please use the resource manager instead
+     *
+     * @return MemcachedOptions Provides a fluent interface
      */
-    public function setMemcachedResource(MemcachedResource $memcachedResource = null)
+    public function setMemcachedResource(?MemcachedResource $memcachedResource = null)
     {
         trigger_error(
             'This method is deprecated and will be removed in the feature'
@@ -116,8 +123,9 @@ class MemcachedOptions extends AdapterOptions
     /**
      * Get memcached resource to share
      *
-     * @return MemcachedResource
      * @deprecated Please use the resource manager instead
+     *
+     * @return MemcachedResource
      */
     public function getMemcachedResource()
     {
@@ -133,10 +141,9 @@ class MemcachedOptions extends AdapterOptions
     /**
      * Set the memcached resource manager to use
      *
-     * @param null|MemcachedResourceManager $resourceManager
      * @return MemcachedOptions Provides a fluent interface
      */
-    public function setResourceManager(MemcachedResourceManager $resourceManager = null)
+    public function setResourceManager(?MemcachedResourceManager $resourceManager = null)
     {
         if ($this->resourceManager !== $resourceManager) {
             $this->triggerOptionEvent('resource_manager', $resourceManager);
@@ -210,11 +217,12 @@ class MemcachedOptions extends AdapterOptions
     /**
      * Add a server to the list
      *
+     * @deprecated Please use the resource manager instead
+     *
      * @param string $host
      * @param int $port
      * @param int $weight
      * @return MemcachedOptions Provides a fluent interface
-     * @deprecated Please use the resource manager instead
      */
     public function addServer($host, $port = 11211, $weight = 0)
     {
@@ -227,19 +235,19 @@ class MemcachedOptions extends AdapterOptions
         $this->getResourceManager()->addServer($this->getResourceId(), [
             'host'   => $host,
             'port'   => $port,
-            'weight' => $weight
+            'weight' => $weight,
         ]);
 
         return $this;
     }
 
     /**
-    * Set a list of memcached servers to add on initialize
-    *
-    * @param string|array $servers list of servers
-    * @return MemcachedOptions Provides a fluent interface
-    * @throws Exception\InvalidArgumentException
-    */
+     * Set a list of memcached servers to add on initialize
+     *
+     * @param string|array $servers list of servers
+     * @return MemcachedOptions Provides a fluent interface
+     * @throws Exception\InvalidArgumentException
+     */
     public function setServers($servers)
     {
         $this->getResourceManager()->setServers($this->getResourceId(), $servers);
@@ -257,12 +265,13 @@ class MemcachedOptions extends AdapterOptions
     }
 
     /**
-    * Set libmemcached options
-    *
-    * @param array $libOptions
-    * @return MemcachedOptions Provides a fluent interface
-    * @link http://php.net/manual/memcached.constants.php
-    */
+     * Set libmemcached options
+     *
+     * @link http://php.net/manual/memcached.constants.php
+     *
+     * @param array $libOptions
+     * @return MemcachedOptions Provides a fluent interface
+     */
     public function setLibOptions(array $libOptions)
     {
         $this->getResourceManager()->setLibOptions($this->getResourceId(), $libOptions);
@@ -272,11 +281,13 @@ class MemcachedOptions extends AdapterOptions
     /**
      * Set libmemcached option
      *
+     * @deprecated Please use lib_options or the resource manager instead
+     *
+     * @link http://php.net/manual/memcached.constants.php
+     *
      * @param string|int $key
      * @param mixed $value
      * @return MemcachedOptions Provides a fluent interface
-     * @link http://php.net/manual/memcached.constants.php
-     * @deprecated Please use lib_options or the resource manager instead
      */
     public function setLibOption($key, $value)
     {
@@ -293,8 +304,9 @@ class MemcachedOptions extends AdapterOptions
     /**
      * Get libmemcached options
      *
-     * @return array
      * @link http://php.net/manual/memcached.constants.php
+     *
+     * @return array
      */
     public function getLibOptions()
     {
@@ -302,13 +314,15 @@ class MemcachedOptions extends AdapterOptions
     }
 
     /**
-    * Get libmemcached option
-    *
-    * @param string|int $key
-    * @return mixed
-    * @link http://php.net/manual/memcached.constants.php
-    * @deprecated Please use lib_options or the resource manager instead
-    */
+     * Get libmemcached option
+     *
+     * @deprecated Please use lib_options or the resource manager instead
+     *
+     * @link http://php.net/manual/memcached.constants.php
+     *
+     * @param string|int $key
+     * @return mixed
+     */
     public function getLibOption($key)
     {
         trigger_error(
