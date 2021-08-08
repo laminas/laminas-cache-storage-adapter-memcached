@@ -4,12 +4,9 @@ namespace LaminasTest\Cache\Storage\Adapter;
 
 use Laminas\Cache;
 use Memcached;
-use Prophecy\Argument;
-use stdClass;
 use Throwable;
 
 use function defined;
-use function extension_loaded;
 use function getenv;
 use function random_int;
 use function restore_error_handler;
@@ -17,35 +14,27 @@ use function set_error_handler;
 
 use const E_USER_DEPRECATED;
 
-/**
- * @group      Laminas_Cache
- * @covers Laminas\Cache\Storage\Adapter\Memcached<extended>
- */
-class MemcachedTest extends CommonAdapterTest
+final class MemcachedTest extends AbstractCommonAdapterTest
 {
-    public function setUp()
+    public function setUp(): void
     {
-        if (! extension_loaded('memcached')) {
-            $this->markTestSkipped("Memcached extension is not loaded");
-        }
-
-        $this->_options = new Cache\Storage\Adapter\MemcachedOptions([
+        $this->options = new Cache\Storage\Adapter\MemcachedOptions([
             'resource_id' => self::class,
         ]);
 
         if (getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST') && getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')) {
-            $this->_options->getResourceManager()->setServers(self::class, [
+            $this->options->getResourceManager()->setServers(self::class, [
                 [getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST'), getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')],
             ]);
         } elseif (getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')) {
-            $this->_options->getResourceManager()->setServers(self::class, [
+            $this->options->getResourceManager()->setServers(self::class, [
                 [getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')],
             ]);
         }
 
-        $this->_storage = new Cache\Storage\Adapter\Memcached();
-        $this->_storage->setOptions($this->_options);
-        $this->_storage->flush();
+        $this->storage = new Cache\Storage\Adapter\Memcached();
+        $this->storage->setOptions($this->options);
+        $this->storage->flush();
 
         parent::setUp();
     }
@@ -95,28 +84,44 @@ class MemcachedTest extends CommonAdapterTest
             return;
         }
 
-        $resource        = $this->prophesize(Memcached::class);
-        $resourceManager = $this->prophesize(Cache\Storage\Adapter\MemcachedResourceManager::class);
+        $resource        = $this->createPartialMock(Memcached::class, [
+            'get',
+            'getResultCode',
+            'getResultMessage',
+        ]);
+        $resourceManager = $this->createMock(Cache\Storage\Adapter\MemcachedResourceManager::class);
 
-        $resourceManager->getResource(Argument::any())->willReturn($resource->reveal());
-        $resource->get(Argument::cetera())->willReturn(null);
-        $resource->getResultCode()->willReturn(Memcached::RES_PARTIAL_READ);
-        $resource->getResultMessage()->willReturn('foo');
+        $resourceManager
+            ->method('getResource')
+            ->willReturn($resource);
+
+        $resource
+            ->method('get')
+            ->willReturn(null);
+
+        $resource
+            ->method('getResultCode')
+            ->willReturn(Memcached::RES_PARTIAL_READ);
+
+        $resource
+            ->method('getResultMessage')
+            ->willReturn('foo');
 
         $storage = new Cache\Storage\Adapter\Memcached([
-            'resource_manager' => $resourceManager->reveal(),
+            'resource_manager' => $resourceManager,
         ]);
 
-        $storage->getEventManager()->attach(
-            'getItem.exception',
-            function (Cache\Storage\ExceptionEvent $e) {
-                $e->setThrowException(false);
-                $e->stopPropagation(true);
-            },
-            -1
-        );
+        $storage
+            ->getEventManager()->attach(
+                'getItem.exception',
+                function (Cache\Storage\ExceptionEvent $e) {
+                    $e->setThrowException(false);
+                    $e->stopPropagation(true);
+                },
+                -1
+            );
 
-        $this->assertNull($storage->getItem('unknwon', $success, $casToken));
+        $this->assertNull($storage->getItem('unknown', $success, $casToken));
         $this->assertFalse($success);
         $this->assertNull($casToken);
     }
@@ -239,7 +244,7 @@ class MemcachedTest extends CommonAdapterTest
 
     public function testExceptionCodeIsPassedToRuntimeExceptionWhenExceptionIsBeingDetectedByInternalMethod(): void
     {
-        $memcached = new class ($this->_options) extends Cache\Storage\Adapter\Memcached {
+        $memcached = new class ($this->options) extends Cache\Storage\Adapter\Memcached {
             /** @psalm-param positive-int $code  */
             public function createExceptionWithCode(int $code): Throwable
             {
@@ -255,7 +260,11 @@ class MemcachedTest extends CommonAdapterTest
 
     public function testExceptionCodeIsPassedToRuntimeExceptionWhenTotalSpaceRequestFails(): void
     {
-        $memcached = $this->createPartialMock(stdClass::class, ['getStats', 'getResultMessage', 'getResultCode']);
+        $memcached = $this
+            ->getMockBuilder(Memcached::class)
+            ->onlyMethods(['getStats', 'getResultMessage', 'getResultCode'])
+            ->getMock();
+
         $memcached->method('getStats')->willReturn(false);
         $memcached->method('getResultMessage')->willReturn('Bar');
         $code = random_int(1, 999);
@@ -278,7 +287,11 @@ class MemcachedTest extends CommonAdapterTest
 
     public function testExceptionCodeIsPassedToRuntimeExceptionWhenAvailableSpaceRequestFails(): void
     {
-        $memcached = $this->createPartialMock(stdClass::class, ['getStats', 'getResultMessage', 'getResultCode']);
+        $memcached = $this
+            ->getMockBuilder(Memcached::class)
+            ->onlyMethods(['getStats', 'getResultMessage', 'getResultCode'])
+            ->getMock();
+
         $memcached->method('getStats')->willReturn(false);
         $memcached->method('getResultMessage')->willReturn('Foo');
         $code = random_int(1, 999);
@@ -299,10 +312,10 @@ class MemcachedTest extends CommonAdapterTest
         $storage->getAvailableSpace();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
-        if ($this->_storage) {
-            $this->_storage->flush();
+        if ($this->storage) {
+            $this->storage->flush();
         }
 
         parent::tearDown();
