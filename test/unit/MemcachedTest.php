@@ -84,7 +84,11 @@ final class MemcachedTest extends AbstractCommonAdapterTest
             return;
         }
 
-        $resource        = $this->createMock(Memcached::class);
+        $resource        = $this->createPartialMock(Memcached::class, [
+            'get',
+            'getResultCode',
+            'getResultMessage',
+        ]);
         $resourceManager = $this->createMock(Cache\Storage\Adapter\MemcachedResourceManager::class);
 
         $resourceManager
