@@ -50,7 +50,7 @@ class MemcachedTest extends CommonAdapterTest
         parent::setUp();
     }
 
-    public function getCommonAdapterNamesProvider()
+    public function getCommonAdapterNamesProvider(): array
     {
         return [
             ['memcached'],
@@ -61,7 +61,7 @@ class MemcachedTest extends CommonAdapterTest
     /**
      * @deprecated
      */
-    public function testOptionsAddServer()
+    public function testOptionsAddServer(): void
     {
         $options = new Cache\Storage\Adapter\MemcachedOptions();
 
@@ -88,7 +88,7 @@ class MemcachedTest extends CommonAdapterTest
         $this->assertEquals($memcached->getOptions()->getServers(), $servers);
     }
 
-    public function testMemcachedReturnsSuccessFalseOnError()
+    public function testMemcachedReturnsSuccessFalseOnError(): void
     {
         if (! defined('Memcached::GET_EXTENDED')) {
             $this->markTestSkipped('Test skipped because Memcached < 3.0 with Memcached::GET_EXTENDED not defined');
@@ -121,7 +121,7 @@ class MemcachedTest extends CommonAdapterTest
         $this->assertNull($casToken);
     }
 
-    public function getServersDefinitions()
+    public function getServersDefinitions(): array
     {
         $expectedServers = [
             ['host' => '127.0.0.1', 'port' => 12345, 'weight' => 1],
@@ -169,16 +169,17 @@ class MemcachedTest extends CommonAdapterTest
     }
 
     /**
+     * @param string|array $servers
      * @dataProvider getServersDefinitions
      */
-    public function testOptionSetServers($servers, $expectedServers)
+    public function testOptionSetServers($servers, array $expectedServers): void
     {
         $options = new Cache\Storage\Adapter\MemcachedOptions();
         $options->setServers($servers);
         $this->assertEquals($expectedServers, $options->getServers());
     }
 
-    public function testLibOptionsSet()
+    public function testLibOptionsSet(): void
     {
         $options = new Cache\Storage\Adapter\MemcachedOptions();
 
@@ -200,7 +201,7 @@ class MemcachedTest extends CommonAdapterTest
     /**
      * @deprecated
      */
-    public function testLibOptionSet()
+    public function testLibOptionSet(): void
     {
         $options = new Cache\Storage\Adapter\MemcachedOptions();
 
@@ -225,7 +226,7 @@ class MemcachedTest extends CommonAdapterTest
         ]);
     }
 
-    public function testOptionPersistentId()
+    public function testOptionPersistentId(): void
     {
         $options         = new Cache\Storage\Adapter\MemcachedOptions();
         $resourceId      = $options->getResourceId();

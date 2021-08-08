@@ -62,7 +62,7 @@ class MemcachedResourceManager
      * Normalize one server into the following format:
      * array('host' => <host>, 'port' => <port>, 'weight' => <weight>)
      *
-     * @param string|array &$server
+     * @param string|array $server
      * @throws Exception\InvalidArgumentException
      */
     protected function normalizeServer(&$server)

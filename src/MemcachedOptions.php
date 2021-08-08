@@ -55,6 +55,9 @@ class MemcachedOptions extends AdapterOptions
      *
      * @see AdapterOptions::setNamespace()
      * @see MemcachedOptions::setPrefixKey()
+     *
+     * @param string $namespace
+     * @return MemcachedOptions Provides a fluent interface
      */
     public function setNamespace($namespace)
     {
@@ -67,7 +70,8 @@ class MemcachedOptions extends AdapterOptions
             ));
         }
 
-        return parent::setNamespace($namespace);
+        parent::setNamespace($namespace);
+        return $this;
     }
 
     /**

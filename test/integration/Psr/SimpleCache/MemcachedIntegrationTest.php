@@ -8,6 +8,7 @@ use Laminas\Cache\Psr\SimpleCache\SimpleCacheDecorator;
 use Laminas\Cache\Storage\Adapter\Memcached;
 use Laminas\Cache\StorageFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Psr\SimpleCache\CacheInterface;
 
 use function date_default_timezone_get;
 use function date_default_timezone_set;
@@ -48,7 +49,7 @@ class MemcachedIntegrationTest extends SimpleCacheTest
         parent::tearDown();
     }
 
-    public function createSimpleCache()
+    public function createSimpleCache(): CacheInterface
     {
         $host = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST');
         $port = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT');

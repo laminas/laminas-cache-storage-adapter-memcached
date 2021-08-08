@@ -47,7 +47,7 @@ class MemcachedResourceManagerTest extends TestCase
      *
      * @return array
      */
-    public function validResourceProvider()
+    public function validResourceProvider(): array
     {
         return [
             // empty resource
@@ -202,18 +202,16 @@ class MemcachedResourceManagerTest extends TestCase
 
     /**
      * @dataProvider validResourceProvider
-     * @param string $resourceId
      * @param mixed  $resource
-     * @param string $expectedPersistentId
      * @param array  $expectedServers
      * @param array  $expectedLibOptions
      */
     public function testValidResources(
-        $resourceId,
+        string $resourceId,
         $resource,
-        $expectedPersistentId,
-        $expectedServers,
-        $expectedLibOptions
+        string $expectedPersistentId,
+        array $expectedServers,
+        array $expectedLibOptions
     ) {
         // php-memcached is required to set libmemcached options
         if (is_array($resource) && isset($resource['lib_options']) && count($resource['lib_options']) > 0) {

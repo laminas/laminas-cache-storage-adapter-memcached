@@ -224,7 +224,7 @@ class Memcached extends AbstractAdapter implements
         $success = true;
         if ($result === false) {
             $rsCode = $memc->getResultCode();
-            if ($rsCode == MemcachedResource::RES_NOTFOUND) {
+            if ($rsCode === MemcachedResource::RES_NOTFOUND) {
                 $result  = null;
                 $success = false;
             } elseif ($rsCode) {
@@ -288,9 +288,9 @@ class Memcached extends AbstractAdapter implements
         $value = $memc->get($this->namespacePrefix . $normalizedKey);
         if ($value === false) {
             $rsCode = $memc->getResultCode();
-            if ($rsCode == MemcachedResource::RES_SUCCESS) {
+            if ($rsCode === MemcachedResource::RES_SUCCESS) {
                 return true;
-            } elseif ($rsCode == MemcachedResource::RES_NOTFOUND) {
+            } elseif ($rsCode === MemcachedResource::RES_NOTFOUND) {
                 return false;
             } else {
                 throw $this->getExceptionByResultCode($rsCode);
@@ -382,7 +382,7 @@ class Memcached extends AbstractAdapter implements
         $memc       = $this->getMemcachedResource();
         $expiration = $this->expirationTime();
         if (! $memc->add($this->namespacePrefix . $normalizedKey, $value, $expiration)) {
-            if ($memc->getResultCode() == MemcachedResource::RES_NOTSTORED) {
+            if ($memc->getResultCode() === MemcachedResource::RES_NOTSTORED) {
                 return false;
             }
             throw $this->getExceptionByResultCode($memc->getResultCode());
@@ -405,7 +405,7 @@ class Memcached extends AbstractAdapter implements
         $expiration = $this->expirationTime();
         if (! $memc->replace($this->namespacePrefix . $normalizedKey, $value, $expiration)) {
             $rsCode = $memc->getResultCode();
-            if ($rsCode == MemcachedResource::RES_NOTSTORED) {
+            if ($rsCode === MemcachedResource::RES_NOTSTORED) {
                 return false;
             }
             throw $this->getExceptionByResultCode($rsCode);
@@ -434,7 +434,7 @@ class Memcached extends AbstractAdapter implements
 
         if ($result === false) {
             $rsCode = $memc->getResultCode();
-            if ($rsCode !== 0 && $rsCode != MemcachedResource::RES_DATA_EXISTS) {
+            if ($rsCode !== 0 && $rsCode !== MemcachedResource::RES_DATA_EXISTS) {
                 throw $this->getExceptionByResultCode($rsCode);
             }
         }
@@ -456,9 +456,9 @@ class Memcached extends AbstractAdapter implements
 
         if ($result === false) {
             $rsCode = $memc->getResultCode();
-            if ($rsCode == MemcachedResource::RES_NOTFOUND) {
+            if ($rsCode === MemcachedResource::RES_NOTFOUND) {
                 return false;
-            } elseif ($rsCode != MemcachedResource::RES_SUCCESS) {
+            } elseif ($rsCode !== MemcachedResource::RES_SUCCESS) {
                 throw $this->getExceptionByResultCode($rsCode);
             }
         }
@@ -489,8 +489,8 @@ class Memcached extends AbstractAdapter implements
 
         $missingKeys = [];
         foreach ($memc->deleteMulti($normalizedKeys) as $normalizedKey => $rsCode) {
-            if ($rsCode !== true && $rsCode != MemcachedResource::RES_SUCCESS) {
-                if ($rsCode != MemcachedResource::RES_NOTFOUND) {
+            if ($rsCode !== true && $rsCode !== MemcachedResource::RES_SUCCESS) {
+                if ($rsCode !== MemcachedResource::RES_NOTFOUND) {
                     throw $this->getExceptionByResultCode($rsCode);
                 }
                 $missingKeys[] = $normalizedKey;
@@ -527,7 +527,7 @@ class Memcached extends AbstractAdapter implements
             $rsCode = $memc->getResultCode();
 
             // initial value
-            if ($rsCode == MemcachedResource::RES_NOTFOUND) {
+            if ($rsCode === MemcachedResource::RES_NOTFOUND) {
                 $newValue = $value;
                 $memc->add($internalKey, $newValue, $this->expirationTime());
                 $rsCode = $memc->getResultCode();
@@ -560,7 +560,7 @@ class Memcached extends AbstractAdapter implements
             $rsCode = $memc->getResultCode();
 
             // initial value
-            if ($rsCode == MemcachedResource::RES_NOTFOUND) {
+            if ($rsCode === MemcachedResource::RES_NOTFOUND) {
                 $newValue = -$value;
                 $memc->add($internalKey, $newValue, $this->expirationTime());
                 $rsCode = $memc->getResultCode();
@@ -643,8 +643,8 @@ class Memcached extends AbstractAdapter implements
      * Generate exception based of memcached result code
      *
      * @param int $code
-     * @throws Exception\RuntimeException
-     * @throws Exception\InvalidArgumentException On success code
+     * @return Exception\RuntimeException
+     * @throws Exception\InvalidArgumentException On success code.
      */
     protected function getExceptionByResultCode($code)
     {

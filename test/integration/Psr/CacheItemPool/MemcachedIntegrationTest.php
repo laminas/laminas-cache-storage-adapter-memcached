@@ -8,6 +8,7 @@ use Laminas\Cache\Psr\CacheItemPool\CacheItemPoolDecorator;
 use Laminas\Cache\Storage\Adapter\Memcached;
 use Laminas\Cache\StorageFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Psr\Cache\CacheItemPoolInterface;
 
 use function date_default_timezone_get;
 use function date_default_timezone_set;
@@ -50,7 +51,7 @@ class MemcachedIntegrationTest extends CachePoolTest
         parent::tearDown();
     }
 
-    public function createCachePool()
+    public function createCachePool(): CacheItemPoolInterface
     {
         $host = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST');
         $port = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT');
