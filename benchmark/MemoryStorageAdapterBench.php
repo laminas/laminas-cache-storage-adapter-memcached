@@ -30,4 +30,18 @@ class MemoryStorageAdapterBench extends AbstractStorageAdapterBenchmark
 
         parent::__construct(new Memcached($options));
     }
+
+    /**
+     * Skipped due to https://github.com/laminas/laminas-cache-storage-adapter-memcached/issues/17
+     */
+    public function benchDecrementMissingItemsSingle(): void
+    {
+    }
+
+    /**
+     * Skipped due to https://github.com/laminas/laminas-cache-storage-adapter-memcached/issues/17
+     */
+    public function benchDecrementMissingItemsBulk(): void
+    {
+    }
 }
