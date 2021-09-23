@@ -15,7 +15,7 @@ use function getenv;
  * @Iterations(10)
  * @Warmup(1)
  */
-class MemoryStorageAdapterBench extends AbstractStorageAdapterBenchmark
+class MemcachedStorageAdapterBench extends AbstractStorageAdapterBenchmark
 {
     public function __construct()
     {
