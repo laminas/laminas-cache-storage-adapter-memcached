@@ -14,15 +14,17 @@ use Traversable;
 use function array_fill_keys;
 use function array_keys;
 use function array_pop;
+use function assert;
 use function defined;
 use function func_num_args;
+use function is_string;
 use function method_exists;
-use function phpversion;
+use function sprintf;
 use function strlen;
 use function substr;
 use function time;
 
-class Memcached extends AbstractAdapter implements
+final class Memcached extends AbstractAdapter implements
     AvailableSpaceCapableInterface,
     FlushableInterface,
     TotalSpaceCapableInterface
@@ -34,41 +36,35 @@ class Memcached extends AbstractAdapter implements
      *
      * @var bool
      */
-    protected $initialized = false;
+    private $initialized = false;
 
     /**
      * The memcached resource manager
      *
      * @var null|MemcachedResourceManager
      */
-    protected $resourceManager;
+    private $resourceManager;
 
     /**
      * The memcached resource id
      *
      * @var null|string
      */
-    protected $resourceId;
+    private $resourceId;
 
     /**
      * The namespace prefix
      *
      * @var string
      */
-    protected $namespacePrefix = '';
+    private $namespacePrefix = '';
 
     /**
-     * Constructor
-     *
      * @param  null|array|Traversable|MemcachedOptions $options
      * @throws Exception\ExceptionInterface
      */
     public function __construct($options = null)
     {
-        if (phpversion('memcached') < 1) {
-            throw new Exception\ExtensionNotLoadedException('Need ext/memcached version >= 1.0.0');
-        }
-
         parent::__construct($options);
 
         // reset initialized flag on update option(s)
@@ -83,7 +79,7 @@ class Memcached extends AbstractAdapter implements
      *
      * @return MemcachedResource
      */
-    protected function getMemcachedResource()
+    private function getMemcachedResource()
     {
         if (! $this->initialized) {
             $this->initialize();
@@ -622,26 +618,26 @@ class Memcached extends AbstractAdapter implements
      * may not exceed 60*60*24*30 (number of seconds in 30 days); if the
      * expiration value is larger than that, the server will consider it to be
      * real Unix time value rather than an offset from current time.
-     *
-     * @return int
      */
-    protected function expirationTime()
+    private function expirationTime(): int
     {
         $ttl = $this->getOptions()->getTtl();
         if ($ttl > 2592000) {
             return time() + $ttl;
         }
-        return $ttl;
+
+        return (int) $ttl;
     }
 
     /**
      * Generate exception based of memcached result code
      *
-     * @param int $code
-     * @return Exception\RuntimeException
+     * @internal
+     *
+     * @psalm-param positive-int $code
      * @throws Exception\InvalidArgumentException On success code.
      */
-    protected function getExceptionByResultCode($code)
+    public function getExceptionByResultCode(int $code): Exception\RuntimeException
     {
         switch ($code) {
             case MemcachedResource::RES_SUCCESS:
@@ -650,8 +646,11 @@ class Memcached extends AbstractAdapter implements
                 );
 
             default:
+                $resource     = $this->getMemcachedResource();
+                $errorMessage = $resource->getLastErrorMessage();
+                assert(is_string($errorMessage));
                 return new Exception\RuntimeException(
-                    $this->getMemcachedResource()->getResultMessage(),
+                    sprintf('%s: %s', $resource->getResultMessage(), $errorMessage),
                     $code
                 );
         }
