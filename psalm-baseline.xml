@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.10.0@916b098b008f6de4543892b1e0651c1c3b92cbfa">
+  <file src="src/Memcached.php">
+    <ArgumentTypeCoercion occurrences="12">
+      <code>$memc-&gt;getResultCode()</code>
+      <code>$memc-&gt;getResultCode()</code>
+      <code>$memc-&gt;getResultCode()</code>
+      <code>$memc-&gt;getResultCode()</code>
+      <code>$memc-&gt;getResultCode()</code>
+      <code>$rsCode</code>
+      <code>$rsCode</code>
+      <code>$rsCode</code>
+      <code>$rsCode</code>
+      <code>$rsCode</code>
+      <code>$rsCode</code>
+      <code>$rsCode</code>
+    </ArgumentTypeCoercion>
+    <InvalidReturnStatement occurrences="1">
+      <code>time() + $ttl</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>int</code>
+    </InvalidReturnType>
+    <LessSpecificReturnStatement occurrences="1">
+      <code>parent::setOptions($options)</code>
+    </LessSpecificReturnStatement>
+    <MixedArgument occurrences="3">
+      <code>$casToken</code>
+      <code>$rsCode</code>
+      <code>$token</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion occurrences="2">
+      <code>$internalKey</code>
+      <code>$missingKey</code>
+    </MixedArgumentTypeCoercion>
+    <MixedArrayAccess occurrences="5">
+      <code>$mem['bytes']</code>
+      <code>$mem['limit_maxbytes']</code>
+      <code>$mem['limit_maxbytes']</code>
+      <code>$output['cas']</code>
+      <code>$output['value']</code>
+    </MixedArrayAccess>
+    <MixedAssignment occurrences="14">
+      <code>$casToken</code>
+      <code>$mem</code>
+      <code>$mem</code>
+      <code>$namespacedKeyValuePairs[$this-&gt;namespacePrefix . $normalizedKey]</code>
+      <code>$normalizedKey</code>
+      <code>$normalizedKey</code>
+      <code>$output</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$result</code>
+      <code>$tmp[substr($internalKey, $nsPrefixLength)]</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+    </MixedAssignment>
+    <MixedInferredReturnType occurrences="3">
+      <code>MemcachedOptions</code>
+      <code>int|float</code>
+      <code>int|float</code>
+    </MixedInferredReturnType>
+    <MixedOperand occurrences="3">
+      <code>$mem['limit_maxbytes']</code>
+      <code>$normalizedKey</code>
+      <code>$normalizedKey</code>
+    </MixedOperand>
+    <MixedReturnStatement occurrences="3">
+      <code>$mem['limit_maxbytes']</code>
+      <code>$mem['limit_maxbytes'] - $mem['bytes']</code>
+      <code>$this-&gt;options</code>
+    </MixedReturnStatement>
+    <MoreSpecificImplementedParamType occurrences="1">
+      <code>$options</code>
+    </MoreSpecificImplementedParamType>
+    <MoreSpecificReturnType occurrences="1">
+      <code>Memcached</code>
+    </MoreSpecificReturnType>
+    <PossiblyNullArgument occurrences="2">
+      <code>$casToken</code>
+      <code>$this-&gt;resourceId</code>
+    </PossiblyNullArgument>
+    <PossiblyNullReference occurrences="1">
+      <code>getResource</code>
+    </PossiblyNullReference>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>Memcached</code>
+    </PropertyNotSetInConstructor>
+    <RedundantCastGivenDocblockType occurrences="2">
+      <code>(int) $value</code>
+      <code>(int) $value</code>
+    </RedundantCastGivenDocblockType>
+    <TypeDoesNotContainType occurrences="3">
+      <code>$stats === false</code>
+      <code>$stats === false</code>
+      <code>MemcachedResource::RES_SUCCESS</code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="src/MemcachedOptions.php">
+    <PossiblyNullReference occurrences="1">
+      <code>getResource</code>
+    </PossiblyNullReference>
+    <RedundantCastGivenDocblockType occurrences="3">
+      <code>(string) $namespace</code>
+      <code>(string) $namespaceSeparator</code>
+      <code>(string) $resourceId</code>
+    </RedundantCastGivenDocblockType>
+  </file>
+  <file src="src/MemcachedResourceManager.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>'Memcached'</code>
+    </ArgumentTypeCoercion>
+    <DocblockTypeContradiction occurrences="3">
+      <code>! is_array($libOptions) &amp;&amp; ! $libOptions instanceof Traversable</code>
+      <code>$server instanceof Traversable</code>
+      <code>is_array($resource)</code>
+    </DocblockTypeContradiction>
+    <InvalidScalarArgument occurrences="1">
+      <code>$key</code>
+    </InvalidScalarArgument>
+    <MissingReturnType occurrences="5">
+      <code>normalizeLibOptionKey</code>
+      <code>normalizeLibOptions</code>
+      <code>normalizePersistentId</code>
+      <code>normalizeServer</code>
+      <code>normalizeServers</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="12">
+      <code>$constValue</code>
+      <code>$k</code>
+      <code>$key</code>
+      <code>$resource['lib_options']</code>
+      <code>$resource['lib_options']</code>
+      <code>$resource['persistent_id']</code>
+      <code>$resource['servers']</code>
+      <code>$resource['servers']</code>
+      <code>$resource['servers']</code>
+      <code>$resource['servers']</code>
+      <code>$server</code>
+      <code>$servers</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion occurrences="1">
+      <code>$key</code>
+    </MixedArgumentTypeCoercion>
+    <MixedArrayAccess occurrences="11">
+      <code>$resource['lib_options']</code>
+      <code>$resource['lib_options']</code>
+      <code>$resource['lib_options']</code>
+      <code>$resource['lib_options']</code>
+      <code>$resource['persistent_id']</code>
+      <code>$resource['persistent_id']</code>
+      <code>$resource['persistent_id']</code>
+      <code>$resource['servers']</code>
+      <code>$resource['servers']</code>
+      <code>$resource['servers']</code>
+      <code>$resource['servers']</code>
+    </MixedArrayAccess>
+    <MixedArrayAssignment occurrences="4">
+      <code>$resource['lib_options']</code>
+      <code>$resource['persistent_id']</code>
+      <code>$resource['servers']</code>
+      <code>$resource['servers']</code>
+    </MixedArrayAssignment>
+    <MixedArrayOffset occurrences="1">
+      <code>$libOptions[$constValue]</code>
+    </MixedArrayOffset>
+    <MixedAssignment occurrences="18">
+      <code>$constValue</code>
+      <code>$k</code>
+      <code>$key</code>
+      <code>$key</code>
+      <code>$libOptions[$constValue]</code>
+      <code>$resource</code>
+      <code>$resource</code>
+      <code>$resource</code>
+      <code>$resource</code>
+      <code>$resource</code>
+      <code>$resource</code>
+      <code>$resource</code>
+      <code>$resource</code>
+      <code>$resource</code>
+      <code>$result[$key]</code>
+      <code>$v</code>
+      <code>$value</code>
+      <code>$value</code>
+    </MixedAssignment>
+    <MixedInferredReturnType occurrences="3">
+      <code>array</code>
+      <code>array</code>
+      <code>string</code>
+    </MixedInferredReturnType>
+    <MixedOperand occurrences="6">
+      <code>$serverA['host']</code>
+      <code>$serverA['port']</code>
+      <code>$serverB['host']</code>
+      <code>$serverB['port']</code>
+      <code>$server['host']</code>
+      <code>$server['port']</code>
+    </MixedOperand>
+    <MixedReturnStatement occurrences="3">
+      <code>$resource['lib_options']</code>
+      <code>$resource['persistent_id']</code>
+      <code>$resource['servers']</code>
+    </MixedReturnStatement>
+    <PossiblyInvalidArgument occurrences="4">
+      <code>$libOptions</code>
+      <code>$servers</code>
+      <code>$servers</code>
+      <code>$servers</code>
+    </PossiblyInvalidArgument>
+    <PossiblyInvalidArrayOffset occurrences="2">
+      <code>$server['host']</code>
+      <code>$server['port']</code>
+    </PossiblyInvalidArrayOffset>
+    <PossiblyUndefinedArrayOffset occurrences="1">
+      <code>$server['host']</code>
+    </PossiblyUndefinedArrayOffset>
+    <RedundantCast occurrences="1">
+      <code>(int) $server['port']</code>
+    </RedundantCast>
+    <RedundantCastGivenDocblockType occurrences="3">
+      <code>(int) $key</code>
+      <code>(string) $id</code>
+      <code>(string) $persistentId</code>
+    </RedundantCastGivenDocblockType>
+    <RedundantCondition occurrences="2">
+      <code>method_exists($memc, 'setOptions')</code>
+      <code>method_exists($resource, 'setOptions')</code>
+    </RedundantCondition>
+  </file>
+  <file src="test/integration/Psr/CacheItemPool/MemcachedIntegrationTest.php">
+    <MixedArrayAssignment occurrences="2">
+      <code>$this-&gt;skippedTests['testBasicUsageWithLongKey']</code>
+      <code>$this-&gt;skippedTests['testHasItemReturnsFalseWhenDeferredItemIsExpired']</code>
+    </MixedArrayAssignment>
+  </file>
+  <file src="test/integration/Psr/SimpleCache/MemcachedIntegrationTest.php">
+    <MixedArrayAssignment occurrences="1">
+      <code>$this-&gt;skippedTests['testBasicUsageWithLongKey']</code>
+    </MixedArrayAssignment>
+  </file>
+  <file src="test/unit/MemcachedResourceManagerTest.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>'Memcached'</code>
+    </ArgumentTypeCoercion>
+    <DeprecatedMethod occurrences="1">
+      <code>setMethods</code>
+    </DeprecatedMethod>
+    <InvalidArgument occurrences="1">
+      <code>$resourceMock</code>
+    </InvalidArgument>
+    <MissingReturnType occurrences="2">
+      <code>testSetLibOptionsOnExistingResource</code>
+      <code>testValidResources</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="2">
+      <code>$resource</code>
+      <code>$resource['lib_options']</code>
+    </MixedArgument>
+    <MixedInferredReturnType occurrences="1">
+      <code>array</code>
+    </MixedInferredReturnType>
+  </file>
+  <file src="test/unit/MemcachedTest.php">
+    <DeprecatedMethod occurrences="4">
+      <code>addServer</code>
+      <code>addServer</code>
+      <code>addServer</code>
+      <code>setLibOption</code>
+    </DeprecatedMethod>
+    <MixedInferredReturnType occurrences="1">
+      <code>array</code>
+    </MixedInferredReturnType>
+  </file>
+</files>

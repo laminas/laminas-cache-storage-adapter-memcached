@@ -1,25 +1,17 @@
 <?php
 
-namespace LaminasTest\Cache\Psr\CacheItemPool;
+namespace LaminasTest\Cache\Storage\Adapter\Psr\CacheItemPool;
 
-use Cache\IntegrationTests\CachePoolTest;
-use Laminas\Cache\Exception;
-use Laminas\Cache\Psr\CacheItemPool\CacheItemPoolDecorator;
 use Laminas\Cache\Storage\Adapter\Memcached;
-use Laminas\Cache\StorageFactory;
-use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
-use Psr\Cache\CacheItemPoolInterface;
+use Laminas\Cache\Storage\StorageInterface;
+use LaminasTest\Cache\Storage\Adapter\AbstractCacheItemPoolIntegrationTest;
 
 use function date_default_timezone_get;
 use function date_default_timezone_set;
-use function get_class;
 use function getenv;
 use function sprintf;
 
-/**
- * @require extension memcached
- */
-class MemcachedIntegrationTest extends CachePoolTest
+class MemcachedIntegrationTest extends AbstractCacheItemPoolIntegrationTest
 {
     /**
      * Backup default timezone
@@ -28,16 +20,19 @@ class MemcachedIntegrationTest extends CachePoolTest
      */
     private $tz;
 
-    /** @var Memcached */
-    private $storage;
-
     protected function setUp(): void
     {
         // set non-UTC timezone
         $this->tz = date_default_timezone_get();
         date_default_timezone_set('America/Vancouver');
 
-        $this->skippedTests['testBasicUsageWithLongKey'] = 'Memcached adapter does not support keys up to 300 bytes.';
+        $this->skippedTests['testBasicUsageWithLongKey']                        = 'Memcached adapter does not'
+        . ' support keys up to 300 bytes.';
+        $deferredSkippedMessage                                                 = sprintf(
+            '%s storage doesn\'t support driver deferred',
+            Memcached::class
+        );
+        $this->skippedTests['testHasItemReturnsFalseWhenDeferredItemIsExpired'] = $deferredSkippedMessage;
         parent::setUp();
     }
 
@@ -45,14 +40,10 @@ class MemcachedIntegrationTest extends CachePoolTest
     {
         date_default_timezone_set($this->tz);
 
-        if ($this->storage) {
-            $this->storage->flush();
-        }
-
         parent::tearDown();
     }
 
-    public function createCachePool(): CacheItemPoolInterface
+    protected function createStorage(): StorageInterface
     {
         $host = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST');
         $port = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT');
@@ -66,23 +57,6 @@ class MemcachedIntegrationTest extends CachePoolTest
             $options['servers'] = [[$host]];
         }
 
-        try {
-            $storage = StorageFactory::adapterFactory('memcached', $options);
-
-            $deferredSkippedMessage                                                 = sprintf(
-                '%s storage doesn\'t support driver deferred',
-                get_class($storage)
-            );
-            $this->skippedTests['testHasItemReturnsFalseWhenDeferredItemIsExpired'] = $deferredSkippedMessage;
-
-            return new CacheItemPoolDecorator($storage);
-        } catch (Exception\ExtensionNotLoadedException $e) {
-            $this->markTestSkipped($e->getMessage());
-        } catch (ServiceNotCreatedException $e) {
-            if ($e->getPrevious() instanceof Exception\ExtensionNotLoadedException) {
-                $this->markTestSkipped($e->getMessage());
-            }
-            throw $e;
-        }
+        return new Memcached($options);
     }
 }
