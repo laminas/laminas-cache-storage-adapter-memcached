@@ -14,9 +14,12 @@ use Traversable;
 use function array_fill_keys;
 use function array_keys;
 use function array_pop;
+use function assert;
 use function defined;
 use function func_num_args;
+use function is_string;
 use function method_exists;
+use function sprintf;
 use function strlen;
 use function substr;
 use function time;
@@ -643,8 +646,11 @@ final class Memcached extends AbstractAdapter implements
                 );
 
             default:
+                $resource     = $this->getMemcachedResource();
+                $errorMessage = $resource->getLastErrorMessage();
+                assert(is_string($errorMessage));
                 return new Exception\RuntimeException(
-                    $this->getMemcachedResource()->getResultMessage(),
+                    sprintf('%s: %s', $resource->getResultMessage(), $errorMessage),
                     $code
                 );
         }
