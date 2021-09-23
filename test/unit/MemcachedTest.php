@@ -309,4 +309,11 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         self::assertTrue($this->storage->setItem($key, $value));
         self::assertEquals($value, $this->storage->getItem($key));
     }
+
+    public function testDecrementSameItemTwice(): void
+    {
+        $item = 'foo';
+        $this->storage->decrementItem($item, 1);
+        $this->storage->decrementItem($item, 1);
+    }
 }
