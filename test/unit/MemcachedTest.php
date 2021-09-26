@@ -82,6 +82,7 @@ final class MemcachedTest extends AbstractCommonAdapterTest
             'get',
             'getResultCode',
             'getResultMessage',
+            'getLastErrorMessage',
         ]);
         $resourceManager = $this->createMock(MemcachedResourceManager::class);
 
@@ -100,6 +101,10 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         $resource
             ->method('getResultMessage')
             ->willReturn('foo');
+
+        $resource
+            ->method('getLastErrorMessage')
+            ->willReturn('bar');
 
         $storage = new Memcached([
             'resource_manager' => $resourceManager,
