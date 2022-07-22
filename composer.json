@@ -21,7 +21,7 @@
         "laminas/laminas-cache-storage-adapter-test": "2.0.x-dev",
         "laminas/laminas-coding-standard": "~2.2.0",
         "phpunit/phpunit": "^9.5.8",
-        "psalm/plugin-phpunit": "^0.16.1",
+        "psalm/plugin-phpunit": "^0.17.0",
         "vimeo/psalm": "^4.10"
     },
     "config": {
