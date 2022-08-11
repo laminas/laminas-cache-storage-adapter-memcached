@@ -418,6 +418,7 @@ class MemcachedResourceManager
      * Convert option name into it's constant value
      *
      * @param string|int $key
+     * @param-out int $key
      * @throws Exception\InvalidArgumentException
      */
     protected function normalizeLibOptionKey(&$key)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.10.0@916b098b008f6de4543892b1e0651c1c3b92cbfa">
+<files psalm-version="4.26.0@6998fabb2bf528b65777bf9941920888d23c03ac">
   <file src="src/Memcached.php">
     <ArgumentTypeCoercion occurrences="12">
       <code>$memc-&gt;getResultCode()</code>
@@ -111,14 +111,10 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>'Memcached'</code>
     </ArgumentTypeCoercion>
-    <DocblockTypeContradiction occurrences="3">
-      <code>! is_array($libOptions) &amp;&amp; ! $libOptions instanceof Traversable</code>
+    <DocblockTypeContradiction occurrences="2">
       <code>$server instanceof Traversable</code>
       <code>is_array($resource)</code>
     </DocblockTypeContradiction>
-    <InvalidScalarArgument occurrences="1">
-      <code>$key</code>
-    </InvalidScalarArgument>
     <MissingReturnType occurrences="5">
       <code>normalizeLibOptionKey</code>
       <code>normalizeLibOptions</code>
@@ -224,21 +220,6 @@
       <code>(string) $id</code>
       <code>(string) $persistentId</code>
     </RedundantCastGivenDocblockType>
-    <RedundantCondition occurrences="2">
-      <code>method_exists($memc, 'setOptions')</code>
-      <code>method_exists($resource, 'setOptions')</code>
-    </RedundantCondition>
-  </file>
-  <file src="test/integration/Psr/CacheItemPool/MemcachedIntegrationTest.php">
-    <MixedArrayAssignment occurrences="2">
-      <code>$this-&gt;skippedTests['testBasicUsageWithLongKey']</code>
-      <code>$this-&gt;skippedTests['testHasItemReturnsFalseWhenDeferredItemIsExpired']</code>
-    </MixedArrayAssignment>
-  </file>
-  <file src="test/integration/Psr/SimpleCache/MemcachedIntegrationTest.php">
-    <MixedArrayAssignment occurrences="1">
-      <code>$this-&gt;skippedTests['testBasicUsageWithLongKey']</code>
-    </MixedArrayAssignment>
   </file>
   <file src="test/unit/MemcachedResourceManagerTest.php">
     <ArgumentTypeCoercion occurrences="1">
