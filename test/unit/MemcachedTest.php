@@ -9,6 +9,7 @@ use Laminas\Cache\Storage\Adapter\MemcachedOptions;
 use Laminas\Cache\Storage\Adapter\MemcachedResourceManager;
 use Memcached as MemcachedFromExtension;
 
+use function assert;
 use function bin2hex;
 use function getenv;
 use function random_bytes;
@@ -308,7 +309,10 @@ final class MemcachedTest extends AbstractCommonAdapterTest
     public function testCanStoreValueWithKeyAtMaximumLength(): void
     {
         $maximumKeyLength = $this->storage->getCapabilities()->getMaxKeyLength();
-        $key              = bin2hex(random_bytes((int) ($maximumKeyLength / 2)));
+        $byteLength       = (int) ($maximumKeyLength / 2);
+        self::assertGreaterThanOrEqual(1, $byteLength);
+        assert($byteLength > 0);
+        $key = bin2hex(random_bytes($byteLength));
 
         $value = 'whatever';
         self::assertTrue($this->storage->setItem($key, $value));
