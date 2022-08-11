@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\Cache\Storage\Adapter\Psr\CacheItemPool;
 
 use Laminas\Cache\Storage\Adapter\Memcached;
