@@ -230,7 +230,7 @@ final class Memcached extends AbstractAdapter implements
     {
         $memc = $this->getMemcachedResource();
 
-        foreach ($normalizedKeys as & $normalizedKey) {
+        foreach ($normalizedKeys as &$normalizedKey) {
             $normalizedKey = $this->namespacePrefix . $normalizedKey;
         }
 
@@ -466,7 +466,7 @@ final class Memcached extends AbstractAdapter implements
             return parent::internalRemoveItems($normalizedKeys);
         }
 
-        foreach ($normalizedKeys as & $normalizedKey) {
+        foreach ($normalizedKeys as &$normalizedKey) {
             $normalizedKey = $this->namespacePrefix . $normalizedKey;
         }
 
@@ -483,7 +483,7 @@ final class Memcached extends AbstractAdapter implements
         // remove namespace prefix
         if ($missingKeys && $this->namespacePrefix !== '') {
             $nsPrefixLength = strlen($this->namespacePrefix);
-            foreach ($missingKeys as & $missingKey) {
+            foreach ($missingKeys as &$missingKey) {
                 $missingKey = substr($missingKey, $nsPrefixLength);
             }
         }
