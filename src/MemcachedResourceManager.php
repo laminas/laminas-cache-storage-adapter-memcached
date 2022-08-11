@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laminas\Cache\Storage\Adapter;
 
 use Laminas\Cache\Exception;
@@ -416,6 +418,7 @@ class MemcachedResourceManager
      * Convert option name into it's constant value
      *
      * @param string|int $key
+     * @param-out int $key
      * @throws Exception\InvalidArgumentException
      */
     protected function normalizeLibOptionKey(&$key)
