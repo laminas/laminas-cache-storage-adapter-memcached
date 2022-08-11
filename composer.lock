@@ -1479,21 +1479,21 @@
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-benchmark",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache-storage-adapter-benchmark.git",
-                "reference": "8fcb5698d95f213de1f99dfae1be43b6b20ed197"
+                "reference": "8214c5de999911f0716d63230f077b251f7dfde1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-benchmark/zipball/8fcb5698d95f213de1f99dfae1be43b6b20ed197",
-                "reference": "8fcb5698d95f213de1f99dfae1be43b6b20ed197",
+                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-benchmark/zipball/8214c5de999911f0716d63230f077b251f7dfde1",
+                "reference": "8214c5de999911f0716d63230f077b251f7dfde1",
                 "shasum": ""
             },
             "require": {
                 "laminas/laminas-serializer": "^2.10",
-                "php": "^7.3 || ~8.0.0",
+                "php": "~7.4.0 || ~8.0.0 || ~8.1.0",
                 "phpbench/phpbench": "^1.0"
             },
             "require-dev": {
@@ -1529,7 +1529,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-08-08T11:36:07+00:00"
+            "time": "2022-08-11T17:42:05+00:00"
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-test",
