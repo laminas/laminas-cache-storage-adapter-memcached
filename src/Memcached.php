@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Laminas\Cache\Storage\Adapter;
 
 use Laminas\Cache\Exception;
+use Laminas\Cache\Storage\Adapter\MemcachedResourceManager;
 use Laminas\Cache\Storage\AvailableSpaceCapableInterface;
 use Laminas\Cache\Storage\Capabilities;
 use Laminas\Cache\Storage\FlushableInterface;
@@ -35,31 +36,23 @@ final class Memcached extends AbstractAdapter implements
 
     /**
      * Has this instance be initialized
-     *
-     * @var bool
      */
-    private $initialized = false;
+    private bool $initialized = false;
 
     /**
      * The memcached resource manager
-     *
-     * @var null|MemcachedResourceManager
      */
-    private $resourceManager;
+    private ?MemcachedResourceManager $resourceManager = null;
 
     /**
      * The memcached resource id
-     *
-     * @var null|string
      */
-    private $resourceId;
+    private ?string $resourceId = null;
 
     /**
      * The namespace prefix
-     *
-     * @var string
      */
-    private $namespacePrefix = '';
+    private string $namespacePrefix = '';
 
     /**
      * @param  null|array|Traversable|MemcachedOptions $options
@@ -71,7 +64,7 @@ final class Memcached extends AbstractAdapter implements
 
         // reset initialized flag on update option(s)
         $initialized = &$this->initialized;
-        $this->getEventManager()->attach('option', function () use (&$initialized) {
+        $this->getEventManager()->attach('option', static function () use (&$initialized): void {
             $initialized = false;
         });
     }
@@ -624,7 +617,7 @@ final class Memcached extends AbstractAdapter implements
     private function expirationTime(): int
     {
         $ttl = $this->getOptions()->getTtl();
-        if ($ttl > 2592000) {
+        if ($ttl > 2_592_000) {
             return time() + $ttl;
         }
 

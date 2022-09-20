@@ -56,7 +56,7 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         $options = new MemcachedOptions();
 
         $deprecated = false;
-        set_error_handler(function () use (&$deprecated): bool {
+        set_error_handler(static function () use (&$deprecated): bool {
             $deprecated = true;
             return true;
         }, E_USER_DEPRECATED);
@@ -116,7 +116,7 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         $storage
             ->getEventManager()->attach(
                 'getItem.exception',
-                function (Cache\Storage\ExceptionEvent $e) {
+                static function (Cache\Storage\ExceptionEvent $e): void {
                     $e->setThrowException(false);
                     $e->stopPropagation(true);
                 },
@@ -213,7 +213,7 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         $options = new MemcachedOptions();
 
         $deprecated = false;
-        set_error_handler(function () use (&$deprecated): bool {
+        set_error_handler(static function () use (&$deprecated): bool {
             $deprecated = true;
             return true;
         }, E_USER_DEPRECATED);
