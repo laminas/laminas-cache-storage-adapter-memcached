@@ -553,9 +553,6 @@ class MemcachedResourceManager
     {
         $keyA = $serverA['host'] . ':' . $serverA['port'];
         $keyB = $serverB['host'] . ':' . $serverB['port'];
-        if ($keyA === $keyB) {
-            return 0;
-        }
-        return $keyA > $keyB ? 1 : -1;
+        return $keyA <=> $keyB;
     }
 }

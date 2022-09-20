@@ -16,10 +16,8 @@ final class MemcachedIntegrationTest extends AbstractSimpleCacheIntegrationTest
 {
     /**
      * Backup default timezone
-     *
-     * @var string
      */
-    private $tz;
+    private string $tz;
 
     protected function setUp(): void
     {
