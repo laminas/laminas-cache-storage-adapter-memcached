@@ -66,6 +66,7 @@ class MemcachedResourceManager
      *
      * @param string|array $server
      * @throws Exception\InvalidArgumentException
+     * @param-out array{host: string, port: int, weight: int} $server
      */
     protected function normalizeServer(&$server)
     {
@@ -396,6 +397,7 @@ class MemcachedResourceManager
      *
      * @param array|Traversable $libOptions
      * @throws Exception\InvalidArgumentException
+     * @param-out array<int, mixed> $libOptions
      */
     protected function normalizeLibOptions(&$libOptions)
     {
