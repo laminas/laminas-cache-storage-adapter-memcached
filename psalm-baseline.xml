@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.26.0@6998fabb2bf528b65777bf9941920888d23c03ac">
+<files psalm-version="5.1.0@4defa177c89397c5e14737a80fe4896584130674">
   <file src="src/Memcached.php">
     <ArgumentTypeCoercion occurrences="12">
       <code>$memc-&gt;getResultCode()</code>
@@ -15,11 +15,13 @@
       <code>$rsCode</code>
       <code>$rsCode</code>
     </ArgumentTypeCoercion>
-    <InvalidReturnStatement occurrences="1">
+    <InvalidReturnStatement occurrences="2">
+      <code>$mem['limit_maxbytes']</code>
       <code>time() + $ttl</code>
     </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
+    <InvalidReturnType occurrences="2">
       <code>int</code>
+      <code>int|float</code>
     </InvalidReturnType>
     <LessSpecificReturnStatement occurrences="1">
       <code>parent::setOptions($options)</code>
@@ -33,17 +35,12 @@
       <code>$internalKey</code>
       <code>$missingKey</code>
     </MixedArgumentTypeCoercion>
-    <MixedArrayAccess occurrences="5">
-      <code>$mem['bytes']</code>
-      <code>$mem['limit_maxbytes']</code>
-      <code>$mem['limit_maxbytes']</code>
+    <MixedArrayAccess occurrences="2">
       <code>$output['cas']</code>
       <code>$output['value']</code>
     </MixedArrayAccess>
-    <MixedAssignment occurrences="14">
+    <MixedAssignment occurrences="12">
       <code>$casToken</code>
-      <code>$mem</code>
-      <code>$mem</code>
       <code>$namespacedKeyValuePairs[$this-&gt;namespacePrefix . $normalizedKey]</code>
       <code>$normalizedKey</code>
       <code>$normalizedKey</code>
@@ -56,27 +53,32 @@
       <code>$value</code>
       <code>$value</code>
     </MixedAssignment>
-    <MixedInferredReturnType occurrences="3">
+    <MixedInferredReturnType occurrences="1">
       <code>MemcachedOptions</code>
-      <code>int|float</code>
-      <code>int|float</code>
     </MixedInferredReturnType>
-    <MixedOperand occurrences="3">
-      <code>$mem['limit_maxbytes']</code>
+    <MixedOperand occurrences="2">
       <code>$normalizedKey</code>
       <code>$normalizedKey</code>
     </MixedOperand>
-    <MixedReturnStatement occurrences="3">
-      <code>$mem['limit_maxbytes']</code>
-      <code>$mem['limit_maxbytes'] - $mem['bytes']</code>
+    <MixedReturnStatement occurrences="1">
       <code>$this-&gt;options</code>
     </MixedReturnStatement>
-    <MoreSpecificImplementedParamType occurrences="1">
+    <MoreSpecificImplementedParamType occurrences="2">
+      <code>$options</code>
       <code>$options</code>
     </MoreSpecificImplementedParamType>
     <MoreSpecificReturnType occurrences="1">
       <code>Memcached</code>
     </MoreSpecificReturnType>
+    <PossiblyInvalidArrayAccess occurrences="3">
+      <code>$mem['bytes']</code>
+      <code>$mem['limit_maxbytes']</code>
+      <code>$mem['limit_maxbytes']</code>
+    </PossiblyInvalidArrayAccess>
+    <PossiblyInvalidOperand occurrences="2">
+      <code>$mem['bytes']</code>
+      <code>$mem['limit_maxbytes']</code>
+    </PossiblyInvalidOperand>
     <PossiblyNullArgument occurrences="2">
       <code>$casToken</code>
       <code>$this-&gt;resourceId</code>
@@ -91,11 +93,9 @@
       <code>(int) $value</code>
       <code>(int) $value</code>
     </RedundantCastGivenDocblockType>
-    <TypeDoesNotContainType occurrences="3">
-      <code>$stats === false</code>
-      <code>$stats === false</code>
-      <code>MemcachedResource::RES_SUCCESS</code>
-    </TypeDoesNotContainType>
+  </file>
+  <file src="src/Memcached/AdapterPluginManagerDelegatorFactory.php">
+    <InvalidArgument occurrences="1"/>
   </file>
   <file src="src/MemcachedOptions.php">
     <PossiblyNullReference occurrences="1">
@@ -111,7 +111,8 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>'Memcached'</code>
     </ArgumentTypeCoercion>
-    <DocblockTypeContradiction occurrences="2">
+    <DocblockTypeContradiction occurrences="3">
+      <code>! is_array($libOptions) &amp;&amp; ! $libOptions instanceof Traversable</code>
       <code>$server instanceof Traversable</code>
       <code>is_array($resource)</code>
     </DocblockTypeContradiction>
@@ -122,7 +123,7 @@
       <code>normalizeServer</code>
       <code>normalizeServers</code>
     </MissingReturnType>
-    <MixedArgument occurrences="12">
+    <MixedArgument occurrences="13">
       <code>$constValue</code>
       <code>$k</code>
       <code>$key</code>
@@ -134,16 +135,15 @@
       <code>$resource['servers']</code>
       <code>$resource['servers']</code>
       <code>$server</code>
+      <code>$server</code>
       <code>$servers</code>
     </MixedArgument>
-    <MixedArgumentTypeCoercion occurrences="1">
-      <code>$key</code>
-    </MixedArgumentTypeCoercion>
-    <MixedArrayAccess occurrences="11">
+    <MixedArrayAccess occurrences="12">
       <code>$resource['lib_options']</code>
       <code>$resource['lib_options']</code>
       <code>$resource['lib_options']</code>
       <code>$resource['lib_options']</code>
+      <code>$resource['lib_options'][$key]</code>
       <code>$resource['persistent_id']</code>
       <code>$resource['persistent_id']</code>
       <code>$resource['persistent_id']</code>
@@ -161,22 +161,15 @@
     <MixedArrayOffset occurrences="1">
       <code>$libOptions[$constValue]</code>
     </MixedArrayOffset>
-    <MixedAssignment occurrences="18">
+    <MixedAssignment occurrences="11">
       <code>$constValue</code>
       <code>$k</code>
       <code>$key</code>
       <code>$key</code>
       <code>$libOptions[$constValue]</code>
       <code>$resource</code>
-      <code>$resource</code>
-      <code>$resource</code>
-      <code>$resource</code>
-      <code>$resource</code>
-      <code>$resource</code>
-      <code>$resource</code>
-      <code>$resource</code>
-      <code>$resource</code>
       <code>$result[$key]</code>
+      <code>$server</code>
       <code>$v</code>
       <code>$value</code>
       <code>$value</code>
@@ -186,29 +179,22 @@
       <code>array</code>
       <code>string</code>
     </MixedInferredReturnType>
-    <MixedOperand occurrences="6">
+    <MixedOperand occurrences="4">
       <code>$serverA['host']</code>
       <code>$serverA['port']</code>
       <code>$serverB['host']</code>
       <code>$serverB['port']</code>
-      <code>$server['host']</code>
-      <code>$server['port']</code>
     </MixedOperand>
     <MixedReturnStatement occurrences="3">
       <code>$resource['lib_options']</code>
       <code>$resource['persistent_id']</code>
       <code>$resource['servers']</code>
     </MixedReturnStatement>
-    <PossiblyInvalidArgument occurrences="4">
-      <code>$libOptions</code>
+    <PossiblyInvalidArgument occurrences="3">
       <code>$servers</code>
       <code>$servers</code>
       <code>$servers</code>
     </PossiblyInvalidArgument>
-    <PossiblyInvalidArrayOffset occurrences="2">
-      <code>$server['host']</code>
-      <code>$server['port']</code>
-    </PossiblyInvalidArrayOffset>
     <PossiblyUndefinedArrayOffset occurrences="1">
       <code>$server['host']</code>
     </PossiblyUndefinedArrayOffset>
@@ -222,15 +208,6 @@
     </RedundantCastGivenDocblockType>
   </file>
   <file src="test/unit/MemcachedResourceManagerTest.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>'Memcached'</code>
-    </ArgumentTypeCoercion>
-    <DeprecatedMethod occurrences="1">
-      <code>setMethods</code>
-    </DeprecatedMethod>
-    <InvalidArgument occurrences="1">
-      <code>$resourceMock</code>
-    </InvalidArgument>
     <MissingReturnType occurrences="2">
       <code>testSetLibOptionsOnExistingResource</code>
       <code>testValidResources</code>

@@ -249,7 +249,6 @@ final class MemcachedTest extends AbstractCommonAdapterTest
     {
         /** @psalm-suppress InternalMethod */
         $exception = $this->storage->getExceptionByResultCode(1);
-        self::assertIsInt($exception->getCode());
         self::assertGreaterThan(0, $exception->getCode());
         self::assertInstanceOf(RuntimeException::class, $exception);
     }

@@ -240,9 +240,7 @@ class MemcachedResourceManagerTest extends TestCase
 
         $libOptions   = ['compression' => false];
         $resourceId   = 'testResourceId';
-        $resourceMock = $this->getMockBuilder('Memcached')
-           ->setMethods(['setOptions'])
-            ->getMock();
+        $resourceMock = $this->createMock(Memcached::class);
 
         if (! $memcachedInstalled) {
             $this->expectException(InvalidArgumentException::class);

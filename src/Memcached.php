@@ -466,12 +466,12 @@ final class Memcached extends AbstractAdapter implements
         }
 
         $missingKeys = [];
-        foreach ($memc->deleteMulti($normalizedKeys) as $normalizedKey => $rsCode) {
+        foreach ($memc->deleteMulti($normalizedKeys) as $key => $rsCode) {
             if ($rsCode !== true && $rsCode !== MemcachedResource::RES_SUCCESS) {
                 if ($rsCode !== MemcachedResource::RES_NOTFOUND) {
                     throw $this->getExceptionByResultCode($rsCode);
                 }
-                $missingKeys[] = $normalizedKey;
+                $missingKeys[] = $key;
             }
         }
 
@@ -629,7 +629,7 @@ final class Memcached extends AbstractAdapter implements
      *
      * @internal
      *
-     * @psalm-param positive-int $code
+     * @psalm-param positive-int|0 $code
      * @throws Exception\InvalidArgumentException On success code.
      */
     public function getExceptionByResultCode(int $code): Exception\RuntimeException
