@@ -629,7 +629,7 @@ final class Memcached extends AbstractAdapter implements
      *
      * @internal
      *
-     * @psalm-param positive-int $code
+     * @psalm-param positive-int|0 $code
      * @throws Exception\InvalidArgumentException On success code.
      */
     public function getExceptionByResultCode(int $code): Exception\RuntimeException
