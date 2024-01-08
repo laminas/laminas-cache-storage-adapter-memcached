@@ -20,6 +20,5 @@
     </projectFiles>
     <plugins>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
-        <pluginClass class="Boesing\PsalmPluginStringf\Plugin"/>
     </plugins>
 </psalm>
