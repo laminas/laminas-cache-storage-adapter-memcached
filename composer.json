@@ -19,7 +19,7 @@
         "laminas/laminas-cache-storage-adapter-benchmark": "^1.0",
         "laminas/laminas-cache-storage-adapter-test": "^2.0",
         "laminas/laminas-coding-standard": "~2.5.0",
-        "phpunit/phpunit": "^9.5.8",
+        "phpunit/phpunit": "^10.0.0",
         "psalm/plugin-phpunit": "^0.18.0",
         "vimeo/psalm": "^5.18"
     },
