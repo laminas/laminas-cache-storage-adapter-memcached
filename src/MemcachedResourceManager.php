@@ -171,8 +171,9 @@ final class MemcachedResourceManager implements MemcachedResourceManagerInterfac
             ], $resource);
 
             // normalize and validate params
-            $resource['lib_options'] = $this->normalizeLibOptions($resource['lib_options']);
-            $resource['servers']     = $this->normalizeServers($resource['servers']);
+            $resource['persistent_id'] = (string) $resource['persistent_id'];
+            $resource['lib_options']   = $this->normalizeLibOptions($resource['lib_options']);
+            $resource['servers']       = $this->normalizeServers($resource['servers']);
         }
 
         $this->resources[$id] = $resource;
