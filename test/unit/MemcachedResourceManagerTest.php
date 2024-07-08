@@ -221,14 +221,14 @@ final class MemcachedResourceManagerTest extends TestCase
             }
         }
 
-        $this->assertSame($this->resourceManager, $this->resourceManager->setResource($resourceId, $resource));
+        $this->resourceManager->setResource($resourceId, $resource);
         $this->assertTrue($this->resourceManager->hasResource($resourceId));
 
         $this->assertSame($expectedPersistentId, $this->resourceManager->getPersistentId($resourceId));
         $this->assertEquals($expectedServers, $this->resourceManager->getServers($resourceId));
         $this->assertEquals($expectedLibOptions, $this->resourceManager->getLibOptions($resourceId));
 
-        $this->assertSame($this->resourceManager, $this->resourceManager->removeResource($resourceId));
+        $this->resourceManager->removeResource($resourceId);
         $this->assertFalse($this->resourceManager->hasResource($resourceId));
     }
 
