@@ -146,7 +146,7 @@ final class Memcached extends AbstractAdapter implements
     /**
      * {@inheritDoc}
      */
-    protected function internalGetItem(string $normalizedKey, bool|null &$success = null, mixed &$casToken = null): mixed
+    protected function internalGetItem(string $normalizedKey, ?bool &$success = null, mixed &$casToken = null): mixed
     {
         $memc        = $this->getMemcachedResource();
         $internalKey = $this->namespacePrefix . $normalizedKey;

@@ -29,7 +29,10 @@ final class MemcachedTest extends AbstractCommonAdapterTest
             'resource_id' => self::class,
         ]);
 
-        if (getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST') !== false && getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT') !== false) {
+        if (
+            getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST') !== false &&
+            getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT') !== false
+        ) {
             $this->options->getResourceManager()->setServers(self::class, [
                 [getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST'), getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')],
             ]);
