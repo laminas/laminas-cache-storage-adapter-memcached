@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace LaminasTest\Cache\Storage\Adapter\Psr\CacheItemPool;
 
 use Laminas\Cache\Storage\Adapter\Memcached;
+use Laminas\Cache\Storage\Adapter\MemcachedOptions;
+use Laminas\Cache\Storage\FlushableInterface;
 use Laminas\Cache\Storage\StorageInterface;
 use LaminasTest\Cache\Storage\Adapter\AbstractCacheItemPoolIntegrationTest;
 
@@ -13,7 +15,12 @@ use function date_default_timezone_set;
 use function getenv;
 use function sprintf;
 
-class MemcachedIntegrationTest extends AbstractCacheItemPoolIntegrationTest
+/**
+ * @uses FlushableInterface
+ *
+ * @template-extends AbstractCacheItemPoolIntegrationTest<MemcachedOptions>
+ */
+final class MemcachedIntegrationTest extends AbstractCacheItemPoolIntegrationTest
 {
     /**
      * Backup default timezone
@@ -43,7 +50,7 @@ class MemcachedIntegrationTest extends AbstractCacheItemPoolIntegrationTest
         parent::tearDown();
     }
 
-    protected function createStorage(): StorageInterface
+    protected function createStorage(): StorageInterface&FlushableInterface
     {
         $host = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST');
         $port = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT');
@@ -51,9 +58,9 @@ class MemcachedIntegrationTest extends AbstractCacheItemPoolIntegrationTest
         $options = [
             'resource_id' => self::class,
         ];
-        if ($host && $port) {
+        if ($host !== false && $port !== false) {
             $options['servers'] = [[$host, $port]];
-        } elseif ($host) {
+        } elseif ($host !== false) {
             $options['servers'] = [[$host]];
         }
 

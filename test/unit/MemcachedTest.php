@@ -8,7 +8,7 @@ use Laminas\Cache;
 use Laminas\Cache\Exception\RuntimeException;
 use Laminas\Cache\Storage\Adapter\Memcached;
 use Laminas\Cache\Storage\Adapter\MemcachedOptions;
-use Laminas\Cache\Storage\Adapter\MemcachedResourceManager;
+use Laminas\Cache\Storage\Adapter\MemcachedResourceManagerInterface;
 use Memcached as MemcachedFromExtension;
 
 use function assert;
@@ -16,13 +16,10 @@ use function bin2hex;
 use function getenv;
 use function random_bytes;
 use function random_int;
-use function restore_error_handler;
-use function set_error_handler;
-
-use const E_USER_DEPRECATED;
+use function reset;
 
 /**
- * @template-extends AbstractCommonAdapterTest<Memcached,MemcachedOptions>
+ * @template-extends AbstractCommonAdapterTest<MemcachedOptions,Memcached>
  */
 final class MemcachedTest extends AbstractCommonAdapterTest
 {
@@ -32,11 +29,11 @@ final class MemcachedTest extends AbstractCommonAdapterTest
             'resource_id' => self::class,
         ]);
 
-        if (getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST') && getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')) {
+        if (getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST') !== false && getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT') !== false) {
             $this->options->getResourceManager()->setServers(self::class, [
                 [getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST'), getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')],
             ]);
-        } elseif (getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')) {
+        } elseif (getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST') !== false) {
             $this->options->getResourceManager()->setServers(self::class, [
                 [getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')],
             ]);
@@ -48,37 +45,6 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         parent::setUp();
     }
 
-    /**
-     * @deprecated
-     */
-    public function testOptionsAddServer(): void
-    {
-        $options = new MemcachedOptions();
-
-        $deprecated = false;
-        set_error_handler(static function () use (&$deprecated): bool {
-            $deprecated = true;
-            return true;
-        }, E_USER_DEPRECATED);
-
-        $options->addServer('127.0.0.1', 11211);
-        $options->addServer('localhost');
-        $options->addServer('domain.com', 11215);
-
-        restore_error_handler();
-        $this->assertTrue($deprecated, 'Missing deprecated error');
-
-        $servers = [
-            ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 0],
-            ['host' => 'localhost', 'port' => 11211, 'weight' => 0],
-            ['host' => 'domain.com', 'port' => 11215, 'weight' => 0],
-        ];
-
-        $this->assertEquals($options->getServers(), $servers);
-        $memcached = new Memcached($options);
-        $this->assertEquals($memcached->getOptions()->getServers(), $servers);
-    }
-
     public function testMemcachedReturnsSuccessFalseOnError(): void
     {
         $resource        = $this->createPartialMock(MemcachedFromExtension::class, [
@@ -87,7 +53,7 @@ final class MemcachedTest extends AbstractCommonAdapterTest
             'getResultMessage',
             'getLastErrorMessage',
         ]);
-        $resourceManager = $this->createMock(MemcachedResourceManager::class);
+        $resourceManager = $this->createMock(MemcachedResourceManagerInterface::class);
 
         $resourceManager
             ->method('getResource')
@@ -128,7 +94,7 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         $this->assertNull($casToken);
     }
 
-    public function getServersDefinitions(): array
+    public static function getServersDefinitions(): array
     {
         $expectedServers = [
             ['host' => '127.0.0.1', 'port' => 12345, 'weight' => 1],
@@ -205,35 +171,6 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         ]);
     }
 
-    /**
-     * @deprecated
-     */
-    public function testLibOptionSet(): void
-    {
-        $options = new MemcachedOptions();
-
-        $deprecated = false;
-        set_error_handler(static function () use (&$deprecated): bool {
-            $deprecated = true;
-            return true;
-        }, E_USER_DEPRECATED);
-
-        $options->setLibOption('COMPRESSION', false);
-
-        restore_error_handler();
-        $this->assertTrue($deprecated, 'Missing deprecated error');
-
-        $this->assertEquals($options->getResourceManager()->getLibOption(
-            $options->getResourceId(),
-            MemcachedFromExtension::OPT_COMPRESSION
-        ), false);
-
-        $memcached = new Memcached($options);
-        $this->assertEquals($memcached->getOptions()->getLibOptions(), [
-            MemcachedFromExtension::OPT_COMPRESSION => false,
-        ]);
-    }
-
     public function testOptionPersistentId(): void
     {
         $options         = new MemcachedOptions();
@@ -266,7 +203,7 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         $memcached->method('getResultCode')->willReturn($code);
 
         $options         = new MemcachedOptions();
-        $resourceManager = $this->createMock(MemcachedResourceManager::class);
+        $resourceManager = $this->createMock(MemcachedResourceManagerInterface::class);
         $resourceManager
             ->method('getResource')
             ->willReturn($memcached);
@@ -293,7 +230,7 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         $memcached->method('getResultCode')->willReturn($code);
 
         $options         = new MemcachedOptions();
-        $resourceManager = $this->createMock(MemcachedResourceManager::class);
+        $resourceManager = $this->createMock(MemcachedResourceManagerInterface::class);
         $resourceManager
             ->method('getResource')
             ->willReturn($memcached);
@@ -309,7 +246,7 @@ final class MemcachedTest extends AbstractCommonAdapterTest
 
     public function testCanStoreValueWithKeyAtMaximumLength(): void
     {
-        $maximumKeyLength = $this->storage->getCapabilities()->getMaxKeyLength();
+        $maximumKeyLength = $this->storage->getCapabilities()->maxKeyLength;
         $byteLength       = (int) ($maximumKeyLength / 2);
         self::assertGreaterThanOrEqual(1, $byteLength);
         assert($byteLength > 0);
@@ -318,5 +255,17 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         $value = 'whatever';
         self::assertTrue($this->storage->setItem($key, $value));
         self::assertEquals($value, $this->storage->getItem($key));
+    }
+
+    public function testCanReceiveServerListFromResource(): void
+    {
+        // Initialize memcached instance by persisting data to memcached
+        self::assertTrue($this->storage->setItem('foo', 'bar'));
+        $servers = $this->options->getResourceManager()->getServers($this->options->getResourceId());
+        self::assertNotEmpty($servers);
+        $server = reset($servers);
+        self::assertArrayHasKey('host', $server);
+        self::assertArrayHasKey('port', $server);
+        self::assertArrayHasKey('weight', $server);
     }
 }

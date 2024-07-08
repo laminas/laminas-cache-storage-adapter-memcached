@@ -6,29 +6,38 @@ namespace LaminasBench\Cache;
 
 use Laminas\Cache\Storage\Adapter\Benchmark\AbstractStorageAdapterBenchmark;
 use Laminas\Cache\Storage\Adapter\Memcached;
-use PhpBench\Benchmark\Metadata\Annotations\Iterations;
-use PhpBench\Benchmark\Metadata\Annotations\Revs;
-use PhpBench\Benchmark\Metadata\Annotations\Warmup;
+use Laminas\Cache\Storage\Adapter\MemcachedOptions;
+use PhpBench\Attributes\Iterations;
+use PhpBench\Attributes\Revs;
+use PhpBench\Attributes\Warmup;
 
 use function getenv;
 
 /**
- * @Revs(100)
- * @Iterations(10)
- * @Warmup(1)
+ * @template-extends AbstractStorageAdapterBenchmark<MemcachedOptions>
  */
-class MemcachedStorageAdapterBench extends AbstractStorageAdapterBenchmark
+#[Revs(100)]
+#[Iterations(10)]
+#[Warmup(1)]
+final class MemcachedStorageAdapterBench extends AbstractStorageAdapterBenchmark
 {
     public function __construct()
     {
-        $host = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST') ?: '127.0.0.1';
-        $port = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT') ?: '11211';
+        $host = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST');
+        if ($host === false) {
+            $host = '127.0.0.1';
+        }
+
+        $port = getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT');
+        if ($port === false) {
+            $port = 11211;
+        }
 
         $options = [
             'resource_id' => self::class,
         ];
 
-        $options['servers'] = [[$host, $port]];
+        $options['servers'] = [[$host, (int) $port]];
 
         parent::__construct(new Memcached($options));
     }
