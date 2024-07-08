@@ -8,7 +8,7 @@ use Laminas\Cache\Exception;
 use Memcached as MemcachedResource;
 
 /**
- * @psalm-type ServerArrayShape = array{host:string,port:int,weight:int}
+ * @psalm-type ServerArrayShape = array{host:string,port:int,weight?:int}
  */
 interface MemcachedResourceManagerInterface
 {

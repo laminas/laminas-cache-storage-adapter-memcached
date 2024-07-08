@@ -266,6 +266,5 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         $server = reset($servers);
         self::assertArrayHasKey('host', $server);
         self::assertArrayHasKey('port', $server);
-        self::assertArrayHasKey('weight', $server);
     }
 }
