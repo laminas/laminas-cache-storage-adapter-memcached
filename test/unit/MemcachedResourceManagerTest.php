@@ -222,14 +222,14 @@ final class MemcachedResourceManagerTest extends TestCase
         }
 
         $this->resourceManager->setResource($resourceId, $resource);
-        $this->assertTrue($this->resourceManager->hasResource($resourceId));
+        self::assertTrue($this->resourceManager->hasResource($resourceId));
 
-        $this->assertSame($expectedPersistentId, $this->resourceManager->getPersistentId($resourceId));
-        $this->assertEquals($expectedServers, $this->resourceManager->getServers($resourceId));
-        $this->assertEquals($expectedLibOptions, $this->resourceManager->getLibOptions($resourceId));
+        self::assertSame($expectedPersistentId, $this->resourceManager->getPersistentId($resourceId));
+        self::assertEquals($expectedServers, $this->resourceManager->getServers($resourceId));
+        self::assertEquals($expectedLibOptions, $this->resourceManager->getLibOptions($resourceId));
 
         $this->resourceManager->removeResource($resourceId);
-        $this->assertFalse($this->resourceManager->hasResource($resourceId));
+        self::assertFalse($this->resourceManager->hasResource($resourceId));
     }
 
     public function testSetLibOptionsOnExistingResource()
@@ -266,7 +266,7 @@ final class MemcachedResourceManagerTest extends TestCase
             ['host' => 'domain.com', 'port' => 11215, 'weight' => 0],
         ];
 
-        $this->assertEquals($servers, $resourceManager->getServers('foo'));
+        self::assertEquals($servers, $resourceManager->getServers('foo'));
     }
 
     public function testLibOptionSet(): void
@@ -274,7 +274,7 @@ final class MemcachedResourceManagerTest extends TestCase
         $resourceManager = $this->resourceManager;
         $resourceManager->setLibOption('foo', 'COMPRESSION', false);
 
-        $this->assertFalse($resourceManager->getLibOption(
+        self::assertFalse($resourceManager->getLibOption(
             'foo',
             MemcachedFromExtension::OPT_COMPRESSION
         ));

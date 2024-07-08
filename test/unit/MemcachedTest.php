@@ -89,9 +89,9 @@ final class MemcachedTest extends AbstractCommonAdapterTest
                 -1
             );
 
-        $this->assertNull($storage->getItem('unknown', $success, $casToken));
-        $this->assertFalse($success);
-        $this->assertNull($casToken);
+        self::assertNull($storage->getItem('unknown', $success, $casToken));
+        self::assertFalse($success);
+        self::assertNull($casToken);
     }
 
     public static function getServersDefinitions(): array
@@ -149,7 +149,7 @@ final class MemcachedTest extends AbstractCommonAdapterTest
     {
         $options = new MemcachedOptions();
         $options->setServers($servers);
-        $this->assertEquals($expectedServers, $options->getServers());
+        self::assertEquals($expectedServers, $options->getServers());
     }
 
     public function testLibOptionsSet(): void
@@ -160,13 +160,13 @@ final class MemcachedTest extends AbstractCommonAdapterTest
             'COMPRESSION' => false,
         ]);
 
-        $this->assertEquals($options->getResourceManager()->getLibOption(
+        self::assertEquals($options->getResourceManager()->getLibOption(
             $options->getResourceId(),
             MemcachedFromExtension::OPT_COMPRESSION
         ), false);
 
         $memcached = new Memcached($options);
-        $this->assertEquals($memcached->getOptions()->getLibOptions(), [
+        self::assertEquals($memcached->getOptions()->getLibOptions(), [
             MemcachedFromExtension::OPT_COMPRESSION => false,
         ]);
     }
@@ -178,8 +178,8 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         $resourceManager = $options->getResourceManager();
         $options->setPersistentId('testPersistentId');
 
-        $this->assertSame('testPersistentId', $resourceManager->getPersistentId($resourceId));
-        $this->assertSame('testPersistentId', $options->getPersistentId());
+        self::assertSame('testPersistentId', $resourceManager->getPersistentId($resourceId));
+        self::assertSame('testPersistentId', $options->getPersistentId());
     }
 
     public function testExceptionCodeIsPassedToRuntimeExceptionWhenExceptionIsBeingDetectedByInternalMethod(): void
