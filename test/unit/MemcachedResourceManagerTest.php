@@ -6,7 +6,7 @@ namespace LaminasTest\Cache\Storage\Adapter;
 
 use Laminas\Cache\Exception\InvalidArgumentException;
 use Laminas\Cache\Storage\Adapter\MemcachedResourceManager;
-use Memcached;
+use Memcached as MemcachedFromExtension;
 use PHPUnit\Framework\TestCase;
 
 use function class_exists;
@@ -21,14 +21,12 @@ use function is_array;
  * @group      Laminas_Cache
  * @covers Laminas\Cache\Storage\Adapter\MemcachedResourceManager
  */
-class MemcachedResourceManagerTest extends TestCase
+final class MemcachedResourceManagerTest extends TestCase
 {
     /**
      * The resource manager
-     *
-     * @var MemcachedResourceManager
      */
-    protected $resourceManager;
+    protected MemcachedResourceManager $resourceManager;
 
     public function setUp(): void
     {
@@ -49,7 +47,7 @@ class MemcachedResourceManagerTest extends TestCase
      *
      * @return array
      */
-    public function validResourceProvider(): array
+    public static function validResourceProvider(): array
     {
         return [
             // empty resource
@@ -177,27 +175,27 @@ class MemcachedResourceManagerTest extends TestCase
                 ],
                 '',
                 [],
-                class_exists('Memcached', false) ? [
-                    Memcached::OPT_COMPRESSION => false,
-                    Memcached::OPT_PREFIX_KEY  => 'test_',
-                ] : [],
+                [
+                    MemcachedFromExtension::OPT_COMPRESSION => false,
+                    MemcachedFromExtension::OPT_PREFIX_KEY  => 'test_',
+                ],
             ],
 
             // lib options given as constant value
             [
                 'testLibOptionsGivenAsName',
                 [
-                    'lib_options' => class_exists('Memcached', false) ? [
-                        Memcached::OPT_COMPRESSION => false,
-                        Memcached::OPT_PREFIX_KEY  => 'test_',
-                    ] : [],
+                    'lib_options' => [
+                        MemcachedFromExtension::OPT_COMPRESSION => false,
+                        MemcachedFromExtension::OPT_PREFIX_KEY  => 'test_',
+                    ],
                 ],
                 '',
                 [],
-                class_exists('Memcached', false) ? [
-                    Memcached::OPT_COMPRESSION => false,
-                    Memcached::OPT_PREFIX_KEY  => 'test_',
-                ] : [],
+                [
+                    MemcachedFromExtension::OPT_COMPRESSION => false,
+                    MemcachedFromExtension::OPT_PREFIX_KEY  => 'test_',
+                ],
             ],
         ];
     }
@@ -223,15 +221,15 @@ class MemcachedResourceManagerTest extends TestCase
             }
         }
 
-        $this->assertSame($this->resourceManager, $this->resourceManager->setResource($resourceId, $resource));
-        $this->assertTrue($this->resourceManager->hasResource($resourceId));
+        $this->resourceManager->setResource($resourceId, $resource);
+        self::assertTrue($this->resourceManager->hasResource($resourceId));
 
-        $this->assertSame($expectedPersistentId, $this->resourceManager->getPersistentId($resourceId));
-        $this->assertEquals($expectedServers, $this->resourceManager->getServers($resourceId));
-        $this->assertEquals($expectedLibOptions, $this->resourceManager->getLibOptions($resourceId));
+        self::assertSame($expectedPersistentId, $this->resourceManager->getPersistentId($resourceId));
+        self::assertEquals($expectedServers, $this->resourceManager->getServers($resourceId));
+        self::assertEquals($expectedLibOptions, $this->resourceManager->getLibOptions($resourceId));
 
-        $this->assertSame($this->resourceManager, $this->resourceManager->removeResource($resourceId));
-        $this->assertFalse($this->resourceManager->hasResource($resourceId));
+        $this->resourceManager->removeResource($resourceId);
+        self::assertFalse($this->resourceManager->hasResource($resourceId));
     }
 
     public function testSetLibOptionsOnExistingResource()
@@ -240,7 +238,7 @@ class MemcachedResourceManagerTest extends TestCase
 
         $libOptions   = ['compression' => false];
         $resourceId   = 'testResourceId';
-        $resourceMock = $this->createMock(Memcached::class);
+        $resourceMock = $this->createMock(MemcachedFromExtension::class);
 
         if (! $memcachedInstalled) {
             $this->expectException(InvalidArgumentException::class);
@@ -253,5 +251,32 @@ class MemcachedResourceManagerTest extends TestCase
 
         $this->resourceManager->setResource($resourceId, $resourceMock);
         $this->resourceManager->setLibOptions($resourceId, $libOptions);
+    }
+
+    public function testOptionsAddServer(): void
+    {
+        $resourceManager = $this->resourceManager;
+        $resourceManager->addServer('foo', ['127.0.0.1', 11211]);
+        $resourceManager->addServer('foo', 'localhost');
+        $resourceManager->addServer('foo', ['domain.com', 11215]);
+
+        $servers = [
+            ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 0],
+            ['host' => 'localhost', 'port' => 11211, 'weight' => 0],
+            ['host' => 'domain.com', 'port' => 11215, 'weight' => 0],
+        ];
+
+        self::assertEquals($servers, $resourceManager->getServers('foo'));
+    }
+
+    public function testLibOptionSet(): void
+    {
+        $resourceManager = $this->resourceManager;
+        $resourceManager->setLibOption('foo', 'COMPRESSION', false);
+
+        self::assertFalse($resourceManager->getLibOption(
+            'foo',
+            MemcachedFromExtension::OPT_COMPRESSION
+        ));
     }
 }
