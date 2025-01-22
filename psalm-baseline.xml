@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.18.0@b113f3ed0259fd6e212d87c3df80eec95a6abf19">
+<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
   <file src="benchmark/MemcachedStorageAdapterBench.php">
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')]]></code>
+      <code><![CDATA[getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')]]></code>
+    </RiskyTruthyFalsyComparison>
     <UnusedClass>
-      <code>MemcachedStorageAdapterBench</code>
+      <code><![CDATA[MemcachedStorageAdapterBench]]></code>
     </UnusedClass>
   </file>
   <file src="src/Memcached.php">
@@ -12,68 +16,69 @@
       <code><![CDATA[$memc->getResultCode()]]></code>
       <code><![CDATA[$memc->getResultCode()]]></code>
       <code><![CDATA[$memc->getResultCode()]]></code>
-      <code>$rsCode</code>
-      <code>$rsCode</code>
-      <code>$rsCode</code>
-      <code>$rsCode</code>
-      <code>$rsCode</code>
-      <code>$rsCode</code>
-      <code>$rsCode</code>
+      <code><![CDATA[$rsCode]]></code>
+      <code><![CDATA[$rsCode]]></code>
+      <code><![CDATA[$rsCode]]></code>
+      <code><![CDATA[$rsCode]]></code>
+      <code><![CDATA[$rsCode]]></code>
+      <code><![CDATA[$rsCode]]></code>
+      <code><![CDATA[$rsCode]]></code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement>
       <code><![CDATA[$mem['limit_maxbytes']]]></code>
-      <code>time() + $ttl</code>
+      <code><![CDATA[time() + $ttl]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code>int</code>
-      <code>int|float</code>
+      <code><![CDATA[int]]></code>
+      <code><![CDATA[int|float]]></code>
     </InvalidReturnType>
     <LessSpecificReturnStatement>
-      <code>parent::setOptions($options)</code>
+      <code><![CDATA[parent::setOptions($options)]]></code>
     </LessSpecificReturnStatement>
     <MixedArgument>
-      <code>$casToken</code>
-      <code>$rsCode</code>
-      <code>$token</code>
+      <code><![CDATA[$casToken]]></code>
+      <code><![CDATA[$rsCode]]></code>
+      <code><![CDATA[$token]]></code>
     </MixedArgument>
     <MixedArgumentTypeCoercion>
-      <code>$internalKey</code>
-      <code>$missingKey</code>
+      <code><![CDATA[$internalKey]]></code>
+      <code><![CDATA[$missingKey]]></code>
+      <code><![CDATA[$options]]></code>
     </MixedArgumentTypeCoercion>
     <MixedArrayAccess>
       <code><![CDATA[$output['cas']]]></code>
       <code><![CDATA[$output['value']]]></code>
     </MixedArrayAccess>
     <MixedAssignment>
-      <code>$casToken</code>
+      <code><![CDATA[$casToken]]></code>
       <code><![CDATA[$namespacedKeyValuePairs[$this->namespacePrefix . $normalizedKey]]]></code>
-      <code>$normalizedKey</code>
-      <code>$normalizedKey</code>
-      <code>$output</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$result</code>
-      <code>$tmp[substr($internalKey, $nsPrefixLength)]</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
+      <code><![CDATA[$normalizedKey]]></code>
+      <code><![CDATA[$normalizedKey]]></code>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$tmp[substr($internalKey, $nsPrefixLength)]]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>MemcachedOptions</code>
+      <code><![CDATA[MemcachedOptions]]></code>
     </MixedInferredReturnType>
     <MixedOperand>
-      <code>$normalizedKey</code>
-      <code>$normalizedKey</code>
+      <code><![CDATA[$normalizedKey]]></code>
+      <code><![CDATA[$normalizedKey]]></code>
     </MixedOperand>
     <MixedReturnStatement>
       <code><![CDATA[$this->options]]></code>
     </MixedReturnStatement>
     <MoreSpecificImplementedParamType>
-      <code>$options</code>
-      <code>$options</code>
+      <code><![CDATA[$options]]></code>
+      <code><![CDATA[$options]]></code>
     </MoreSpecificImplementedParamType>
     <MoreSpecificReturnType>
-      <code>Memcached</code>
+      <code><![CDATA[Memcached]]></code>
     </MoreSpecificReturnType>
     <PossiblyInvalidArrayAccess>
       <code><![CDATA[$mem['bytes']]]></code>
@@ -85,58 +90,62 @@
       <code><![CDATA[$mem['limit_maxbytes']]]></code>
     </PossiblyInvalidOperand>
     <PossiblyNullArgument>
-      <code>$casToken</code>
+      <code><![CDATA[$casToken]]></code>
       <code><![CDATA[$this->resourceId]]></code>
     </PossiblyNullArgument>
     <PossiblyNullReference>
-      <code>getResource</code>
+      <code><![CDATA[getResource]]></code>
     </PossiblyNullReference>
     <PossiblyUnusedReturnValue>
-      <code>Memcached</code>
-      <code>int|float</code>
-      <code>int|float</code>
+      <code><![CDATA[Memcached]]></code>
+      <code><![CDATA[int|float]]></code>
+      <code><![CDATA[int|float]]></code>
     </PossiblyUnusedReturnValue>
     <PropertyNotSetInConstructor>
-      <code>Memcached</code>
+      <code><![CDATA[Memcached]]></code>
     </PropertyNotSetInConstructor>
     <RedundantCastGivenDocblockType>
-      <code>(int) $value</code>
-      <code>(int) $value</code>
+      <code><![CDATA[(int) $value]]></code>
+      <code><![CDATA[(int) $value]]></code>
     </RedundantCastGivenDocblockType>
     <RedundantCondition>
-      <code>assert(is_string($errorMessage))</code>
-      <code>is_string($errorMessage)</code>
+      <code><![CDATA[assert(is_string($errorMessage))]]></code>
+      <code><![CDATA[is_string($errorMessage)]]></code>
     </RedundantCondition>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
+    </RiskyTruthyFalsyComparison>
     <UnsupportedPropertyReferenceUsage>
       <code><![CDATA[$initialized = &$this->initialized]]></code>
     </UnsupportedPropertyReferenceUsage>
   </file>
   <file src="src/Memcached/AdapterPluginManagerDelegatorFactory.php">
     <UnusedParam>
-      <code>$container</code>
-      <code>$name</code>
+      <code><![CDATA[$container]]></code>
+      <code><![CDATA[$name]]></code>
     </UnusedParam>
   </file>
   <file src="src/Memcached/Module.php">
     <UnusedClass>
-      <code>Module</code>
+      <code><![CDATA[Module]]></code>
     </UnusedClass>
   </file>
   <file src="src/MemcachedOptions.php">
     <PossiblyNullReference>
-      <code>getResource</code>
+      <code><![CDATA[getResource]]></code>
     </PossiblyNullReference>
     <PossiblyUnusedMethod>
-      <code>getLibOption</code>
-      <code>getMemcachedResource</code>
-      <code>setMemcachedResource</code>
-      <code>setNamespaceSeparator</code>
-      <code>setResourceId</code>
+      <code><![CDATA[getLibOption]]></code>
+      <code><![CDATA[getMemcachedResource]]></code>
+      <code><![CDATA[setMemcachedResource]]></code>
+      <code><![CDATA[setNamespaceSeparator]]></code>
+      <code><![CDATA[setResourceId]]></code>
     </PossiblyUnusedMethod>
     <RedundantCastGivenDocblockType>
-      <code>(string) $namespace</code>
-      <code>(string) $namespaceSeparator</code>
-      <code>(string) $resourceId</code>
+      <code><![CDATA[(string) $namespace]]></code>
+      <code><![CDATA[(string) $namespaceSeparator]]></code>
+      <code><![CDATA[(string) $resourceId]]></code>
     </RedundantCastGivenDocblockType>
   </file>
   <file src="src/MemcachedResourceManager.php">
@@ -145,20 +154,20 @@
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction>
       <code><![CDATA[! is_array($libOptions) && ! $libOptions instanceof Traversable]]></code>
-      <code>$server instanceof Traversable</code>
-      <code>is_array($resource)</code>
+      <code><![CDATA[$server instanceof Traversable]]></code>
+      <code><![CDATA[is_array($resource)]]></code>
     </DocblockTypeContradiction>
     <MissingReturnType>
-      <code>normalizeLibOptionKey</code>
-      <code>normalizeLibOptions</code>
-      <code>normalizePersistentId</code>
-      <code>normalizeServer</code>
-      <code>normalizeServers</code>
+      <code><![CDATA[normalizeLibOptionKey]]></code>
+      <code><![CDATA[normalizeLibOptions]]></code>
+      <code><![CDATA[normalizePersistentId]]></code>
+      <code><![CDATA[normalizeServer]]></code>
+      <code><![CDATA[normalizeServers]]></code>
     </MissingReturnType>
     <MixedArgument>
-      <code>$constValue</code>
-      <code>$k</code>
-      <code>$key</code>
+      <code><![CDATA[$constValue]]></code>
+      <code><![CDATA[$k]]></code>
+      <code><![CDATA[$key]]></code>
       <code><![CDATA[$resource['lib_options']]]></code>
       <code><![CDATA[$resource['lib_options']]]></code>
       <code><![CDATA[$resource['persistent_id']]]></code>
@@ -167,8 +176,8 @@
       <code><![CDATA[$resource['servers']]]></code>
       <code><![CDATA[$resource['servers']]]></code>
       <code><![CDATA[$resource['servers']]]></code>
-      <code>$server</code>
-      <code>$servers</code>
+      <code><![CDATA[$server]]></code>
+      <code><![CDATA[$servers]]></code>
     </MixedArgument>
     <MixedArrayAccess>
       <code><![CDATA[$resource['lib_options']]]></code>
@@ -191,25 +200,25 @@
       <code><![CDATA[$resource['servers']]]></code>
     </MixedArrayAssignment>
     <MixedArrayOffset>
-      <code>$libOptions[$constValue]</code>
+      <code><![CDATA[$libOptions[$constValue]]]></code>
     </MixedArrayOffset>
     <MixedAssignment>
-      <code>$constValue</code>
-      <code>$k</code>
-      <code>$key</code>
-      <code>$key</code>
-      <code>$libOptions[$constValue]</code>
-      <code>$resource</code>
-      <code>$result[$key]</code>
-      <code>$server</code>
-      <code>$v</code>
-      <code>$value</code>
-      <code>$value</code>
+      <code><![CDATA[$constValue]]></code>
+      <code><![CDATA[$k]]></code>
+      <code><![CDATA[$key]]></code>
+      <code><![CDATA[$key]]></code>
+      <code><![CDATA[$libOptions[$constValue]]]></code>
+      <code><![CDATA[$resource]]></code>
+      <code><![CDATA[$result[$key]]]></code>
+      <code><![CDATA[$server]]></code>
+      <code><![CDATA[$v]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>array</code>
-      <code>array</code>
-      <code>string</code>
+      <code><![CDATA[array]]></code>
+      <code><![CDATA[array]]></code>
+      <code><![CDATA[string]]></code>
     </MixedInferredReturnType>
     <MixedOperand>
       <code><![CDATA[$serverA['host']]]></code>
@@ -223,28 +232,32 @@
       <code><![CDATA[$resource['servers']]]></code>
     </MixedReturnStatement>
     <NoValue>
-      <code>$server</code>
+      <code><![CDATA[$server]]></code>
     </NoValue>
     <PossiblyInvalidArgument>
-      <code>$servers</code>
-      <code>$servers</code>
-      <code>$servers</code>
+      <code><![CDATA[$servers]]></code>
+      <code><![CDATA[$servers]]></code>
+      <code><![CDATA[$servers]]></code>
     </PossiblyInvalidArgument>
     <PossiblyUndefinedArrayOffset>
       <code><![CDATA[$server['host']]]></code>
     </PossiblyUndefinedArrayOffset>
     <PossiblyUnusedReturnValue>
-      <code>MemcachedResourceManager</code>
-      <code>MemcachedResourceManager</code>
+      <code><![CDATA[MemcachedResourceManager]]></code>
+      <code><![CDATA[MemcachedResourceManager]]></code>
     </PossiblyUnusedReturnValue>
     <RedundantCast>
       <code><![CDATA[(int) $server['port']]]></code>
     </RedundantCast>
     <RedundantCastGivenDocblockType>
-      <code>(int) $key</code>
-      <code>(string) $id</code>
-      <code>(string) $persistentId</code>
+      <code><![CDATA[(int) $key]]></code>
+      <code><![CDATA[(string) $id]]></code>
+      <code><![CDATA[(string) $persistentId]]></code>
     </RedundantCastGivenDocblockType>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[! $host]]></code>
+      <code><![CDATA[! $server]]></code>
+    </RiskyTruthyFalsyComparison>
     <UnsupportedPropertyReferenceUsage>
       <code><![CDATA[$resource = &$this->resources[$id]]]></code>
       <code><![CDATA[$resource = &$this->resources[$id]]]></code>
@@ -260,34 +273,49 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$this->tz]]></code>
     </ArgumentTypeCoercion>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[$host]]></code>
+      <code><![CDATA[$host]]></code>
+      <code><![CDATA[$port]]></code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="test/integration/Psr/SimpleCache/MemcachedIntegrationTest.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$this->tz]]></code>
     </ArgumentTypeCoercion>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[$host]]></code>
+      <code><![CDATA[$host]]></code>
+      <code><![CDATA[$port]]></code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="test/unit/MemcachedResourceManagerTest.php">
     <MissingReturnType>
-      <code>testSetLibOptionsOnExistingResource</code>
-      <code>testValidResources</code>
+      <code><![CDATA[testSetLibOptionsOnExistingResource]]></code>
+      <code><![CDATA[testValidResources]]></code>
     </MissingReturnType>
     <MixedArgument>
-      <code>$resource</code>
+      <code><![CDATA[$resource]]></code>
       <code><![CDATA[$resource['lib_options']]]></code>
     </MixedArgument>
     <MixedInferredReturnType>
-      <code>array</code>
+      <code><![CDATA[array]]></code>
     </MixedInferredReturnType>
   </file>
   <file src="test/unit/MemcachedTest.php">
     <DeprecatedMethod>
-      <code>addServer</code>
-      <code>addServer</code>
-      <code>addServer</code>
-      <code>setLibOption</code>
+      <code><![CDATA[addServer]]></code>
+      <code><![CDATA[addServer]]></code>
+      <code><![CDATA[addServer]]></code>
+      <code><![CDATA[setLibOption]]></code>
     </DeprecatedMethod>
     <MixedInferredReturnType>
-      <code>array</code>
+      <code><![CDATA[array]]></code>
     </MixedInferredReturnType>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')]]></code>
+      <code><![CDATA[getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')]]></code>
+      <code><![CDATA[getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')]]></code>
+    </RiskyTruthyFalsyComparison>
   </file>
 </files>
