@@ -44,9 +44,9 @@ final class MemcachedIntegrationTest extends AbstractSimpleCacheIntegrationTest
         $options = [
             'resource_id' => self::class,
         ];
-        if ($host && $port) {
+        if ($host !== false && $port !== false) {
             $options['servers'] = [[$host, $port]];
-        } elseif ($host) {
+        } elseif ($host !== false) {
             $options['servers'] = [[$host]];
         }
 

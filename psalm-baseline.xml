@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
+<files psalm-version="5.25.0@01a8eb06b9e9cc6cfb6a320bf9fb14331919d505">
   <file src="benchmark/MemcachedStorageAdapterBench.php">
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')]]></code>
-      <code><![CDATA[getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')]]></code>
-    </RiskyTruthyFalsyComparison>
     <UnusedClass>
       <code><![CDATA[MemcachedStorageAdapterBench]]></code>
     </UnusedClass>
@@ -21,65 +17,21 @@
       <code><![CDATA[$rsCode]]></code>
       <code><![CDATA[$rsCode]]></code>
       <code><![CDATA[$rsCode]]></code>
-      <code><![CDATA[$rsCode]]></code>
-      <code><![CDATA[$rsCode]]></code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement>
       <code><![CDATA[$mem['limit_maxbytes']]]></code>
-      <code><![CDATA[time() + $ttl]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
       <code><![CDATA[int]]></code>
-      <code><![CDATA[int|float]]></code>
     </InvalidReturnType>
-    <LessSpecificReturnStatement>
-      <code><![CDATA[parent::setOptions($options)]]></code>
-    </LessSpecificReturnStatement>
     <MixedArgument>
-      <code><![CDATA[$casToken]]></code>
       <code><![CDATA[$rsCode]]></code>
       <code><![CDATA[$token]]></code>
     </MixedArgument>
     <MixedArgumentTypeCoercion>
       <code><![CDATA[$internalKey]]></code>
       <code><![CDATA[$missingKey]]></code>
-      <code><![CDATA[$options]]></code>
     </MixedArgumentTypeCoercion>
-    <MixedArrayAccess>
-      <code><![CDATA[$output['cas']]]></code>
-      <code><![CDATA[$output['value']]]></code>
-    </MixedArrayAccess>
-    <MixedAssignment>
-      <code><![CDATA[$casToken]]></code>
-      <code><![CDATA[$namespacedKeyValuePairs[$this->namespacePrefix . $normalizedKey]]]></code>
-      <code><![CDATA[$normalizedKey]]></code>
-      <code><![CDATA[$normalizedKey]]></code>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$result]]></code>
-      <code><![CDATA[$result]]></code>
-      <code><![CDATA[$result]]></code>
-      <code><![CDATA[$tmp[substr($internalKey, $nsPrefixLength)]]]></code>
-      <code><![CDATA[$value]]></code>
-      <code><![CDATA[$value]]></code>
-      <code><![CDATA[$value]]></code>
-    </MixedAssignment>
-    <MixedInferredReturnType>
-      <code><![CDATA[MemcachedOptions]]></code>
-    </MixedInferredReturnType>
-    <MixedOperand>
-      <code><![CDATA[$normalizedKey]]></code>
-      <code><![CDATA[$normalizedKey]]></code>
-    </MixedOperand>
-    <MixedReturnStatement>
-      <code><![CDATA[$this->options]]></code>
-    </MixedReturnStatement>
-    <MoreSpecificImplementedParamType>
-      <code><![CDATA[$options]]></code>
-      <code><![CDATA[$options]]></code>
-    </MoreSpecificImplementedParamType>
-    <MoreSpecificReturnType>
-      <code><![CDATA[Memcached]]></code>
-    </MoreSpecificReturnType>
     <PossiblyInvalidArrayAccess>
       <code><![CDATA[$mem['bytes']]]></code>
       <code><![CDATA[$mem['limit_maxbytes']]]></code>
@@ -89,33 +41,17 @@
       <code><![CDATA[$mem['bytes']]]></code>
       <code><![CDATA[$mem['limit_maxbytes']]]></code>
     </PossiblyInvalidOperand>
-    <PossiblyNullArgument>
-      <code><![CDATA[$casToken]]></code>
-      <code><![CDATA[$this->resourceId]]></code>
-    </PossiblyNullArgument>
-    <PossiblyNullReference>
-      <code><![CDATA[getResource]]></code>
-    </PossiblyNullReference>
     <PossiblyUnusedReturnValue>
-      <code><![CDATA[Memcached]]></code>
-      <code><![CDATA[int|float]]></code>
-      <code><![CDATA[int|float]]></code>
+      <code><![CDATA[int]]></code>
+      <code><![CDATA[int]]></code>
     </PossiblyUnusedReturnValue>
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[Memcached]]></code>
-    </PropertyNotSetInConstructor>
-    <RedundantCastGivenDocblockType>
-      <code><![CDATA[(int) $value]]></code>
-      <code><![CDATA[(int) $value]]></code>
-    </RedundantCastGivenDocblockType>
     <RedundantCondition>
       <code><![CDATA[assert(is_string($errorMessage))]]></code>
       <code><![CDATA[is_string($errorMessage)]]></code>
     </RedundantCondition>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$output]]></code>
-    </RiskyTruthyFalsyComparison>
+    <TypeDoesNotContainType>
+      <code><![CDATA[setOptions]]></code>
+    </TypeDoesNotContainType>
     <UnsupportedPropertyReferenceUsage>
       <code><![CDATA[$initialized = &$this->initialized]]></code>
     </UnsupportedPropertyReferenceUsage>
@@ -132,45 +68,23 @@
     </UnusedClass>
   </file>
   <file src="src/MemcachedOptions.php">
-    <PossiblyNullReference>
-      <code><![CDATA[getResource]]></code>
-    </PossiblyNullReference>
     <PossiblyUnusedMethod>
-      <code><![CDATA[getLibOption]]></code>
-      <code><![CDATA[getMemcachedResource]]></code>
-      <code><![CDATA[setMemcachedResource]]></code>
       <code><![CDATA[setNamespaceSeparator]]></code>
       <code><![CDATA[setResourceId]]></code>
     </PossiblyUnusedMethod>
-    <RedundantCastGivenDocblockType>
-      <code><![CDATA[(string) $namespace]]></code>
-      <code><![CDATA[(string) $namespaceSeparator]]></code>
-      <code><![CDATA[(string) $resourceId]]></code>
-    </RedundantCastGivenDocblockType>
   </file>
   <file src="src/MemcachedResourceManager.php">
     <ArgumentTypeCoercion>
       <code><![CDATA['Memcached']]></code>
     </ArgumentTypeCoercion>
-    <DocblockTypeContradiction>
-      <code><![CDATA[! is_array($libOptions) && ! $libOptions instanceof Traversable]]></code>
-      <code><![CDATA[$server instanceof Traversable]]></code>
-      <code><![CDATA[is_array($resource)]]></code>
-    </DocblockTypeContradiction>
-    <MissingReturnType>
-      <code><![CDATA[normalizeLibOptionKey]]></code>
-      <code><![CDATA[normalizeLibOptions]]></code>
-      <code><![CDATA[normalizePersistentId]]></code>
-      <code><![CDATA[normalizeServer]]></code>
-      <code><![CDATA[normalizeServers]]></code>
-    </MissingReturnType>
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$resource->getServerList()]]></code>
+    </LessSpecificReturnStatement>
     <MixedArgument>
       <code><![CDATA[$constValue]]></code>
-      <code><![CDATA[$k]]></code>
       <code><![CDATA[$key]]></code>
       <code><![CDATA[$resource['lib_options']]]></code>
       <code><![CDATA[$resource['lib_options']]]></code>
-      <code><![CDATA[$resource['persistent_id']]]></code>
       <code><![CDATA[$resource['persistent_id']]]></code>
       <code><![CDATA[$resource['servers']]]></code>
       <code><![CDATA[$resource['servers']]]></code>
@@ -179,42 +93,9 @@
       <code><![CDATA[$server]]></code>
       <code><![CDATA[$servers]]></code>
     </MixedArgument>
-    <MixedArrayAccess>
-      <code><![CDATA[$resource['lib_options']]]></code>
-      <code><![CDATA[$resource['lib_options']]]></code>
-      <code><![CDATA[$resource['lib_options']]]></code>
-      <code><![CDATA[$resource['lib_options']]]></code>
-      <code><![CDATA[$resource['lib_options'][$key]]]></code>
-      <code><![CDATA[$resource['persistent_id']]]></code>
-      <code><![CDATA[$resource['persistent_id']]]></code>
-      <code><![CDATA[$resource['persistent_id']]]></code>
-      <code><![CDATA[$resource['servers']]]></code>
-      <code><![CDATA[$resource['servers']]]></code>
-      <code><![CDATA[$resource['servers']]]></code>
-      <code><![CDATA[$resource['servers']]]></code>
-    </MixedArrayAccess>
-    <MixedArrayAssignment>
-      <code><![CDATA[$resource['lib_options']]]></code>
-      <code><![CDATA[$resource['persistent_id']]]></code>
-      <code><![CDATA[$resource['servers']]]></code>
-      <code><![CDATA[$resource['servers']]]></code>
-    </MixedArrayAssignment>
     <MixedArrayOffset>
       <code><![CDATA[$libOptions[$constValue]]]></code>
     </MixedArrayOffset>
-    <MixedAssignment>
-      <code><![CDATA[$constValue]]></code>
-      <code><![CDATA[$k]]></code>
-      <code><![CDATA[$key]]></code>
-      <code><![CDATA[$key]]></code>
-      <code><![CDATA[$libOptions[$constValue]]]></code>
-      <code><![CDATA[$resource]]></code>
-      <code><![CDATA[$result[$key]]]></code>
-      <code><![CDATA[$server]]></code>
-      <code><![CDATA[$v]]></code>
-      <code><![CDATA[$value]]></code>
-      <code><![CDATA[$value]]></code>
-    </MixedAssignment>
     <MixedInferredReturnType>
       <code><![CDATA[array]]></code>
       <code><![CDATA[array]]></code>
@@ -231,63 +112,22 @@
       <code><![CDATA[$resource['persistent_id']]]></code>
       <code><![CDATA[$resource['servers']]]></code>
     </MixedReturnStatement>
-    <NoValue>
-      <code><![CDATA[$server]]></code>
-    </NoValue>
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$servers]]></code>
-      <code><![CDATA[$servers]]></code>
-      <code><![CDATA[$servers]]></code>
-    </PossiblyInvalidArgument>
     <PossiblyUndefinedArrayOffset>
       <code><![CDATA[$server['host']]]></code>
     </PossiblyUndefinedArrayOffset>
-    <PossiblyUnusedReturnValue>
-      <code><![CDATA[MemcachedResourceManager]]></code>
-      <code><![CDATA[MemcachedResourceManager]]></code>
-    </PossiblyUnusedReturnValue>
     <RedundantCast>
       <code><![CDATA[(int) $server['port']]]></code>
     </RedundantCast>
-    <RedundantCastGivenDocblockType>
-      <code><![CDATA[(int) $key]]></code>
-      <code><![CDATA[(string) $id]]></code>
-      <code><![CDATA[(string) $persistentId]]></code>
-    </RedundantCastGivenDocblockType>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[! $host]]></code>
-      <code><![CDATA[! $server]]></code>
-    </RiskyTruthyFalsyComparison>
-    <UnsupportedPropertyReferenceUsage>
-      <code><![CDATA[$resource = &$this->resources[$id]]]></code>
-      <code><![CDATA[$resource = &$this->resources[$id]]]></code>
-      <code><![CDATA[$resource = &$this->resources[$id]]]></code>
-      <code><![CDATA[$resource = &$this->resources[$id]]]></code>
-      <code><![CDATA[$resource = &$this->resources[$id]]]></code>
-      <code><![CDATA[$resource = &$this->resources[$id]]]></code>
-      <code><![CDATA[$resource = &$this->resources[$id]]]></code>
-      <code><![CDATA[$resource = &$this->resources[$id]]]></code>
-    </UnsupportedPropertyReferenceUsage>
   </file>
   <file src="test/integration/Psr/CacheItemPool/MemcachedIntegrationTest.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$this->tz]]></code>
     </ArgumentTypeCoercion>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[$host]]></code>
-      <code><![CDATA[$host]]></code>
-      <code><![CDATA[$port]]></code>
-    </RiskyTruthyFalsyComparison>
   </file>
   <file src="test/integration/Psr/SimpleCache/MemcachedIntegrationTest.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$this->tz]]></code>
     </ArgumentTypeCoercion>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[$host]]></code>
-      <code><![CDATA[$host]]></code>
-      <code><![CDATA[$port]]></code>
-    </RiskyTruthyFalsyComparison>
   </file>
   <file src="test/unit/MemcachedResourceManagerTest.php">
     <MissingReturnType>
@@ -303,19 +143,8 @@
     </MixedInferredReturnType>
   </file>
   <file src="test/unit/MemcachedTest.php">
-    <DeprecatedMethod>
-      <code><![CDATA[addServer]]></code>
-      <code><![CDATA[addServer]]></code>
-      <code><![CDATA[addServer]]></code>
-      <code><![CDATA[setLibOption]]></code>
-    </DeprecatedMethod>
     <MixedInferredReturnType>
       <code><![CDATA[array]]></code>
     </MixedInferredReturnType>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')]]></code>
-      <code><![CDATA[getenv('TESTS_LAMINAS_CACHE_MEMCACHED_HOST')]]></code>
-      <code><![CDATA[getenv('TESTS_LAMINAS_CACHE_MEMCACHED_PORT')]]></code>
-    </RiskyTruthyFalsyComparison>
   </file>
 </files>

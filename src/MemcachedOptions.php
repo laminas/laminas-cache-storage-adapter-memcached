@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace Laminas\Cache\Storage\Adapter;
 
 use Laminas\Cache\Exception;
-use Memcached as MemcachedResource;
 
 use function sprintf;
 use function strlen;
-use function trigger_error;
-
-use const E_USER_DEPRECATED;
 
 /**
  * These are options specific to the Memcached adapter
+ *
+ * @psalm-import-type ServerArrayShape from MemcachedResourceManagerInterface
  */
-class MemcachedOptions extends AdapterOptions
+final class MemcachedOptions extends AdapterOptions
 {
+    public const MAXIMUM_NAMESPACE_PREFIX_LENGTH = 128;
     // @codingStandardsIgnoreStart
     /**
      * Prioritized properties ordered by prio to be set first
@@ -25,29 +24,23 @@ class MemcachedOptions extends AdapterOptions
      *
      * @var string[]
      */
-    protected $__prioritizedProperties__ = ['resource_manager', 'resource_id'];
+    protected array $__prioritizedProperties__ = ['resource_manager', 'resource_id'];
     // @codingStandardsIgnoreEnd
 
     /**
      * The namespace separator
-     *
-     * @var string
      */
-    protected $namespaceSeparator = ':';
+    protected string $namespaceSeparator = ':';
 
     /**
      * The memcached resource manager
-     *
-     * @var null|MemcachedResourceManager
      */
-    protected $resourceManager;
+    protected ?MemcachedResourceManagerInterface $resourceManager = null;
 
     /**
      * The resource id of the resource manager
-     *
-     * @var string
      */
-    protected $resourceId = 'default';
+    protected string $resourceId = 'default';
 
     /**
      * Set namespace.
@@ -57,15 +50,10 @@ class MemcachedOptions extends AdapterOptions
      *
      * @see AdapterOptions::setNamespace()
      * @see MemcachedOptions::setPrefixKey()
-     *
-     * @param string $namespace
-     * @return MemcachedOptions Provides a fluent interface
      */
-    public function setNamespace($namespace)
+    public function setNamespace(string $namespace): self
     {
-        $namespace = (string) $namespace;
-
-        if (128 < strlen($namespace)) {
+        if (self::MAXIMUM_NAMESPACE_PREFIX_LENGTH < strlen($namespace)) {
             throw new Exception\InvalidArgumentException(sprintf(
                 '%s expects a prefix key of no longer than 128 characters',
                 __METHOD__
@@ -76,15 +64,8 @@ class MemcachedOptions extends AdapterOptions
         return $this;
     }
 
-    /**
-     * Set namespace separator
-     *
-     * @param  string $namespaceSeparator
-     * @return MemcachedOptions Provides a fluent interface
-     */
-    public function setNamespaceSeparator($namespaceSeparator)
+    public function setNamespaceSeparator(string $namespaceSeparator): self
     {
-        $namespaceSeparator = (string) $namespaceSeparator;
         if ($this->namespaceSeparator !== $namespaceSeparator) {
             $this->triggerOptionEvent('namespace_separator', $namespaceSeparator);
             $this->namespaceSeparator = $namespaceSeparator;
@@ -92,64 +73,15 @@ class MemcachedOptions extends AdapterOptions
         return $this;
     }
 
-    /**
-     * Get namespace separator
-     *
-     * @return string
-     */
-    public function getNamespaceSeparator()
+    public function getNamespaceSeparator(): string
     {
         return $this->namespaceSeparator;
     }
 
     /**
-     * A memcached resource to share
-     *
-     * @deprecated Please use the resource manager instead
-     *
-     * @return MemcachedOptions Provides a fluent interface
-     */
-    public function setMemcachedResource(?MemcachedResource $memcachedResource = null)
-    {
-        trigger_error(
-            'This method is deprecated and will be removed in the feature'
-            . ', please use the resource manager instead',
-            E_USER_DEPRECATED
-        );
-
-        if ($memcachedResource !== null) {
-            $this->triggerOptionEvent('memcached_resource', $memcachedResource);
-            $resourceManager = $this->getResourceManager();
-            $resourceId      = $this->getResourceId();
-            $resourceManager->setResource($resourceId, $memcachedResource);
-        }
-        return $this;
-    }
-
-    /**
-     * Get memcached resource to share
-     *
-     * @deprecated Please use the resource manager instead
-     *
-     * @return MemcachedResource
-     */
-    public function getMemcachedResource()
-    {
-        trigger_error(
-            'This method is deprecated and will be removed in the feature'
-            . ', please use the resource manager instead',
-            E_USER_DEPRECATED
-        );
-
-        return $this->resourceManager->getResource($this->getResourceId());
-    }
-
-    /**
      * Set the memcached resource manager to use
-     *
-     * @return MemcachedOptions Provides a fluent interface
      */
-    public function setResourceManager(?MemcachedResourceManager $resourceManager = null)
+    public function setResourceManager(?MemcachedResourceManagerInterface $resourceManager = null): self
     {
         if ($this->resourceManager !== $resourceManager) {
             $this->triggerOptionEvent('resource_manager', $resourceManager);
@@ -158,12 +90,7 @@ class MemcachedOptions extends AdapterOptions
         return $this;
     }
 
-    /**
-     * Get the memcached resource manager
-     *
-     * @return MemcachedResourceManager
-     */
-    public function getResourceManager()
+    public function getResourceManager(): MemcachedResourceManagerInterface
     {
         if (! $this->resourceManager) {
             $this->resourceManager = new MemcachedResourceManager();
@@ -171,25 +98,13 @@ class MemcachedOptions extends AdapterOptions
         return $this->resourceManager;
     }
 
-    /**
-     * Get the memcached resource id
-     *
-     * @return string
-     */
-    public function getResourceId()
+    public function getResourceId(): string
     {
         return $this->resourceId;
     }
 
-    /**
-     * Set the memcached resource id
-     *
-     * @param string $resourceId
-     * @return MemcachedOptions Provides a fluent interface
-     */
-    public function setResourceId($resourceId)
+    public function setResourceId(string $resourceId): self
     {
-        $resourceId = (string) $resourceId;
         if ($this->resourceId !== $resourceId) {
             $this->triggerOptionEvent('resource_id', $resourceId);
             $this->resourceId = $resourceId;
@@ -197,23 +112,12 @@ class MemcachedOptions extends AdapterOptions
         return $this;
     }
 
-    /**
-     * Get the persistent id
-     *
-     * @return string
-     */
-    public function getPersistentId()
+    public function getPersistentId(): string
     {
         return $this->getResourceManager()->getPersistentId($this->getResourceId());
     }
 
-    /**
-     * Set the persistent id
-     *
-     * @param string $persistentId
-     * @return MemcachedOptions Provides a fluent interface
-     */
-    public function setPersistentId($persistentId)
+    public function setPersistentId(string $persistentId): self
     {
         $this->triggerOptionEvent('persistent_id', $persistentId);
         $this->getResourceManager()->setPersistentId($this->getResourceId(), $persistentId);
@@ -221,51 +125,20 @@ class MemcachedOptions extends AdapterOptions
     }
 
     /**
-     * Add a server to the list
-     *
-     * @deprecated Please use the resource manager instead
-     *
-     * @param string $host
-     * @param int $port
-     * @param int $weight
-     * @return MemcachedOptions Provides a fluent interface
-     */
-    public function addServer($host, $port = 11211, $weight = 0)
-    {
-        trigger_error(
-            'This method is deprecated and will be removed in the feature'
-            . ', please use the resource manager instead',
-            E_USER_DEPRECATED
-        );
-
-        $this->getResourceManager()->addServer($this->getResourceId(), [
-            'host'   => $host,
-            'port'   => $port,
-            'weight' => $weight,
-        ]);
-
-        return $this;
-    }
-
-    /**
      * Set a list of memcached servers to add on initialize
      *
-     * @param string|array $servers list of servers
-     * @return MemcachedOptions Provides a fluent interface
      * @throws Exception\InvalidArgumentException
      */
-    public function setServers($servers)
+    public function setServers(string|iterable $servers): self
     {
         $this->getResourceManager()->setServers($this->getResourceId(), $servers);
         return $this;
     }
 
     /**
-     * Get Servers
-     *
-     * @return array
+     * @return list<ServerArrayShape>
      */
-    public function getServers()
+    public function getServers(): array
     {
         return $this->getResourceManager()->getServers($this->getResourceId());
     }
@@ -274,36 +147,10 @@ class MemcachedOptions extends AdapterOptions
      * Set libmemcached options
      *
      * @link http://php.net/manual/memcached.constants.php
-     *
-     * @param array $libOptions
-     * @return MemcachedOptions Provides a fluent interface
      */
-    public function setLibOptions(array $libOptions)
+    public function setLibOptions(array $libOptions): self
     {
         $this->getResourceManager()->setLibOptions($this->getResourceId(), $libOptions);
-        return $this;
-    }
-
-    /**
-     * Set libmemcached option
-     *
-     * @deprecated Please use lib_options or the resource manager instead
-     *
-     * @link http://php.net/manual/memcached.constants.php
-     *
-     * @param string|int $key
-     * @param mixed $value
-     * @return MemcachedOptions Provides a fluent interface
-     */
-    public function setLibOption($key, $value)
-    {
-        trigger_error(
-            'This method is deprecated and will be removed in the feature'
-            . ', please use "lib_options" or the resource manager instead',
-            E_USER_DEPRECATED
-        );
-
-        $this->getResourceManager()->setLibOption($this->getResourceId(), $key, $value);
         return $this;
     }
 
@@ -311,32 +158,9 @@ class MemcachedOptions extends AdapterOptions
      * Get libmemcached options
      *
      * @link http://php.net/manual/memcached.constants.php
-     *
-     * @return array
      */
-    public function getLibOptions()
+    public function getLibOptions(): array
     {
         return $this->getResourceManager()->getLibOptions($this->getResourceId());
-    }
-
-    /**
-     * Get libmemcached option
-     *
-     * @deprecated Please use lib_options or the resource manager instead
-     *
-     * @link http://php.net/manual/memcached.constants.php
-     *
-     * @param string|int $key
-     * @return mixed
-     */
-    public function getLibOption($key)
-    {
-        trigger_error(
-            'This method is deprecated and will be removed in the feature'
-            . ', please use "lib_options" or the resource manager instead',
-            E_USER_DEPRECATED
-        );
-
-        return $this->getResourceManager()->getLibOption($this->getResourceId(), $key);
     }
 }
