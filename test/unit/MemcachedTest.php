@@ -97,6 +97,14 @@ final class MemcachedTest extends AbstractCommonAdapterTest
         self::assertNull($casToken);
     }
 
+    /**
+     * @return list<
+     *     array{
+     *          0: array<array-key, mixed>|string,
+     *          1: list<array{host: string, port: int, weight: int}>
+     *     }
+     * >
+     */
     public static function getServersDefinitions(): array
     {
         $expectedServers = [

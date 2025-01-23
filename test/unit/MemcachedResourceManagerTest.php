@@ -14,11 +14,6 @@ use function count;
 use function is_array;
 
 /**
- * PHPUnit test case
- */
-
-/**
- * @group      Laminas_Cache
  * @covers Laminas\Cache\Storage\Adapter\MemcachedResourceManager
  */
 final class MemcachedResourceManagerTest extends TestCase
@@ -45,7 +40,7 @@ final class MemcachedResourceManagerTest extends TestCase
      *     <array normalized server list>
      * )[, ...])
      *
-     * @return array
+     * @return list<array{0: string, 1: mixed, 2: string, 3: array, 4: array}>
      */
     public static function validResourceProvider(): array
     {
@@ -202,13 +197,10 @@ final class MemcachedResourceManagerTest extends TestCase
 
     /**
      * @dataProvider validResourceProvider
-     * @param mixed  $resource
-     * @param array  $expectedServers
-     * @param array  $expectedLibOptions
      */
     public function testValidResources(
         string $resourceId,
-        $resource,
+        mixed $resource,
         string $expectedPersistentId,
         array $expectedServers,
         array $expectedLibOptions
