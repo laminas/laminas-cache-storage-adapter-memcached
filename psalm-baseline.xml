@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
+<files psalm-version="6.20.0@804f03c0c183d149fcd4b8c7c0c9b3fbf836d34c">
   <file src="benchmark/MemcachedStorageAdapterBench.php">
     <UnusedClass>
       <code><![CDATA[MemcachedStorageAdapterBench]]></code>
@@ -18,6 +18,9 @@
       <code><![CDATA[$rsCode]]></code>
       <code><![CDATA[$rsCode]]></code>
     </ArgumentTypeCoercion>
+    <InvalidOperand>
+      <code><![CDATA[time() + $ttl]]></code>
+    </InvalidOperand>
     <InvalidReturnStatement>
       <code><![CDATA[$mem['limit_maxbytes']]]></code>
     </InvalidReturnStatement>
@@ -41,6 +44,18 @@
       <code><![CDATA[$mem['bytes']]]></code>
       <code><![CDATA[$mem['limit_maxbytes']]]></code>
     </PossiblyInvalidOperand>
+    <PossiblyNullArrayAccess>
+      <code><![CDATA[$mem['bytes']]]></code>
+      <code><![CDATA[$mem['limit_maxbytes']]]></code>
+      <code><![CDATA[$mem['limit_maxbytes']]]></code>
+    </PossiblyNullArrayAccess>
+    <PossiblyNullOperand>
+      <code><![CDATA[$mem['bytes']]]></code>
+      <code><![CDATA[$mem['limit_maxbytes']]]></code>
+    </PossiblyNullOperand>
+    <NullableReturnStatement>
+      <code><![CDATA[$mem['limit_maxbytes']]]></code>
+    </NullableReturnStatement>
     <PossiblyUnusedReturnValue>
       <code><![CDATA[int]]></code>
       <code><![CDATA[int]]></code>
@@ -96,11 +111,6 @@
     <MixedArrayOffset>
       <code><![CDATA[$libOptions[$constValue]]]></code>
     </MixedArrayOffset>
-    <MixedInferredReturnType>
-      <code><![CDATA[array]]></code>
-      <code><![CDATA[array]]></code>
-      <code><![CDATA[string]]></code>
-    </MixedInferredReturnType>
     <MixedOperand>
       <code><![CDATA[$serverA['host']]]></code>
       <code><![CDATA[$serverA['port']]]></code>
